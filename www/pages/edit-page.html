@@ -1,0 +1,114 @@
+<div>
+
+    <h4><i class="bi bi-file-earmark-post fs-1 me-3"></i>Webseite bearbeiten</h4>
+    <p>
+
+    </p>
+
+</div>
+
+<script type="module">
+    import {CodeJar} from 'https://medv.io/codejar/codejar.js'
+</script>
+
+
+<template id="languageListTpl">
+    <div ka:for="let curForm of forms" class="mt-2 row">
+
+            <div class="col-4 col-lg-2"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
+            <div class="col-7 col-lg-9">
+                <input ka:if="curForm.type == 'text'"
+                       kap:attr="curForm.attrs" class="form-control"
+                       kap:bind="page[curForm.key]">
+                <span kap:textContent="curForm.desc " class="text-muted small"></span>
+
+                <div ka:if="curForm.type == 'multi'" class="form-check">
+                    <label ka:for="let opt of curForm.options" class="form-check-label mt-1">
+                        <input kap:bindarray="page[curForm.key]" kap:value="opt.key" type="checkbox" class="form-check-input" >
+                        <span kap:textContent="opt.text"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-1 col-lg-1 text-center">
+                <i ka:if="curForm.title != null" class="bi bi-info-circle fs-3" data-bs-toggle="tooltip" kap:attr:title="curForm.title"></i>
+            </div>
+        </div>
+    </div>
+    <pre id="editor1" kap:textContent="page.content" class="w-100 border bg-light mt-4 p-3" style=" font-size: 16px">
+    </pre>
+
+
+
+
+
+    <nav class="navbar fixed-bottom navbar-light bg-light">
+        <div class="container text-end">
+            <button class="btn btn-primary ms-auto" kap:on:click="$fn.save()"><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
+        </div>
+    </nav>
+
+</template>
+
+
+<script type="module">
+import {CodeJar} from 'https://medv.io/codejar/codejar.js'
+
+    const defaultForms = [
+        {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
+        {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
+        {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
+            desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."
+        },
+        {key: "title", name: "Seiten-Titel", type: "text", attrs: {disabled: false},
+            title: "Festen Link angeben: Bitte freilassen, wenn Links automatisch angelegt werden sollen."},
+        {key: "description", name: "Kurzbeschreibung", type: "text", attrs: {disabled: false, maxlength: 160},
+            title: "Kurzbeschreibung: So erscheint Ihre Website in den Suchergebnissen. (Max. 160 Zeichen)"},
+
+        {key: "order", name: "Sortierung", type: "text", attrs: {disabled: false, type:"number",maxlength: 160},
+            title: "Kleinere Werte werden zuerst angezeigt (Nur für Listen)"},
+
+        {key: "ptags", name: "Page-Tags", type: "multi", options: [
+                {value: "show", text: "Auf Startseite anzeigen"}
+            ],
+            title: "Kleinere Werte werden zuerst angezeigt (Nur für Listen)"},
+    ];
+
+    ka_define("page-edit", async(self, tpl) => {
+        let pid = KaToolsV1.route.search.get("pid");
+        let lang = KaToolsV1.route.search.get("lang");
+        let sec = pid.split("/")[0];
+        let page =  await api_call("pages/" + pid + "?lang=" + lang);
+        let section =  await api_call(`files/${sec}/_section.yml`);
+
+        let scope = {
+            page: page,
+            section: section,
+            forms: defaultForms,
+            $fn: {
+
+                save: () => {
+                    api_call("files/_data/translations.yml", "POST", translations);
+                }
+            }
+        }
+
+        tpl.render(scope);
+
+        //await KaToolsV1.debounce(500, 500);
+
+        const highlight = (editor) => {
+          const code = editor.textContent
+          // Do something with code and set html.
+          editor.innerHTML = code
+        }
+        let jar = CodeJar(self.querySelector("#editor1"), highlight);
+        jar.onUpdate(code => scope.page.content)
+
+
+
+    }, '#languageListTpl');
+
+
+</script>
+
+<page-edit></page-edit>

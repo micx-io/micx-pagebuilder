@@ -1,0 +1,61 @@
+<div>
+
+    <h4><i class="bi bi-chat-square-dots fs-1 me-3"></i>Übersetzungen Textfragmente</h4>
+    <p>
+        Auf dieser Seite definieren Sie die Übersetzungen von Textfragmenten in der Seite sowie in Plugins.
+        Um den Original-Text anzuzeigen, lassen
+        Sie das Eingabefeld bitte frei.
+    </p>
+</div>
+
+
+
+<template id="languageListTpl">
+    <div ka:for="let curTransKey in translations" class="mt-4">
+        <div>
+        <span>Original: </span>
+        <span kap:textContent="curTransKey" class="fw-bold"></span>
+            <span class="text-muted" ka:if="translations[curTransKey]._hint != null">(<span kap:textContent="translations[curTransKey]._hint"></span>)</span>
+        </div>
+        <div ka:for="let curLang of languages" class="row mt-2">
+            <div class="col-4 col-lg-2"><label class="col-form-label" kap:textContent="curLang.name + ' (' + curLang.lang + ')'"></label>:</div>
+            <div class="col-8 col-lg-10"><input type="text" class="form-control" kap:bind="translations[curTransKey][curLang.lang]"></div>
+        </div>
+    </div>
+    <nav class="navbar fixed-bottom navbar-light bg-light">
+        <div class="container text-end">
+            <button class="btn btn-primary ms-auto" kap:on:click="$fn.save()"><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
+        </div>
+    </nav>
+
+</template>
+
+
+<script>
+
+
+    ka_define("language-list", async(self, tpl) => {
+        let languages =  await api_call("files/_data/languages.yml");
+        let translations =  await api_call("files/_data/translations.yml");
+        for (let key in translations) {
+            if (translations[key] === null)
+                translations[key] = {}
+        }
+
+        tpl.render({
+            languages: languages,
+            translations: translations,
+            $fn: {
+                save: () => {
+                    api_call("files/_data/translations.yml", "POST", translations);
+                }
+            }
+        });
+
+
+    }, '#languageListTpl');
+
+
+</script>
+
+<language-list></language-list>
