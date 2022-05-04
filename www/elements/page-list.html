@@ -1,0 +1,60 @@
+<template id="sectionsListTpl">
+    <ol class="list-group">
+
+        <li ka:for="let curSection of sections" class="list-group-item  align-items-start">
+
+            <div class="ms-2 d-block w-100">
+                <div class="fw-bold" kap:textContent="curSection.section_name"></div>
+                <span kap:textContent="curSection.section.desc" class="text-muted"></span>
+            </div>
+            <div class="badge bg-primary rounded-pill" kap:textContent="curSection.pages.length"></div>
+
+            <ol class="list-group d-block w-100 list-group-flush">
+                <li ka:for="let pid in curSection.pages" class="list-group-item d-flex align-items-start">
+                    <div class="row w-100">
+                        <div class="col-6">
+                            <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][Object.keys(curSection.pages[pid])[0]].pid, lang: Object.keys(curSection.pages[pid])[0]})">
+                                <i class="bi bi-file-earmark-post me-3"></i><span kap:textContent="pid"></span>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-primary me-2">
+                                <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][curLang].pid, lang: curLang})" class="text-white">
+                                    <span kap:textContent="curLang"></span>
+                                    <i class="bi bi-eye-fill" ka:if="curSection.pages[pid][curLang].published"></i>
+                                    <i class="bi bi-eye-slash"ka:if="! curSection.pages[pid][curLang].published"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
+                </li>
+            </ol>
+
+        </li>
+
+    </ol>
+
+</template>
+
+
+<script>
+
+
+    ka_define("sections-list", async(self, tpl) => {
+        let response =  await api_call("list/pages");
+
+        console.log(response);
+        tpl.render({
+            sections: response.sections,
+            $fn: {
+            }
+        });
+
+
+    }, '#sectionsListTpl');
+
+
+</script>
+
+<sections-list></sections-list>

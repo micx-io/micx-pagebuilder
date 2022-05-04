@@ -14,6 +14,8 @@ function ka_href(route_name, params = {}, search = null) {
     route = route.replaceAll(/{([a-zA-Z0-9_]+)}/g, (match, name) => {
         return params[name];
     });
+    if (search !== null)
+        return route + "?" + (new URLSearchParams(search));
     return route;
 }
 
@@ -52,12 +54,17 @@ class KasimirV1_Router extends HTMLElement {
                 continue;
             }
             if (e.getAttribute("route") !== null) {
+                let route = e.getAttribute("route");
+                if (route.endsWith("/"))
+                    route = route.slice(0, -1);
 
+                KaToolsV1.routes[e.getAttribute("route_name")] = route;
 
-                KaToolsV1.routes[e.getAttribute("route_name")] = e.getAttribute("route");
-
-                let regex = new RegExp(this.routeDef2RegEx(e.getAttribute("route")));
-                let match = regex.exec(location.pathname);
+                let regex = new RegExp(this.routeDef2RegEx(route));
+                let pathname = location.pathname;
+                if (pathname.endsWith("/"))
+                    pathname = pathname.slice(0, -1);
+                let match = regex.exec(pathname);
                 if (match === null)
                     continue;
 

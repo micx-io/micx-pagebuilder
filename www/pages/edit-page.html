@@ -1,12 +1,38 @@
-<div>
+<script>
+    var languages = null;
+</script>
+<div class="row">
+    <div class="d-none d-xl-block col-0 col-xl-4">
+        <ka-include src="/elements/page-list.html"></ka-include>
+    </div>
 
-    <h4><i class="bi bi-file-earmark-post fs-1 me-3"></i>Webseite bearbeiten</h4>
-    <p>
+    <div class="col-12 col-xl-8">
+        <ka-tpl class="" wait="page:dataLoaded@page-edit">
+            <h4 class="float-start ">
+                <i class="bi bi-file-earmark-post fs-1 me-3"></i>
+                <span kap:textContent="$event.detail.pid"></span>
+                <span kap:textContent="$event.detail.lang" class=" badge bg-primary p-1"></span>
+            </h4>
 
-    </p>
+            <div class="dropdown float-end">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sprache: <span kap:textContent="$event.detail.lang"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="langSelect">
+                    <li ka:for="let lang of $event.detail.languages"><a class="dropdown-item" kap:classlist:active="lang.lang === $event.detail.lang" kap:attr:href="`?pid=${$event.detail.pid}&lang=${lang.lang}`" kap:textContent="lang.name"></a></li>
+
+                </ul>
+            </div>
+
+            <p>
+
+            </p>
+        </ka-tpl>
+        <div class="clearfix mb-4"></div>
+        <page-edit></page-edit>
+    </div>
 
 </div>
-
 <script type="module">
     import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 </script>
@@ -64,6 +90,8 @@
 <script type="module">
 import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 
+
+
     const defaultForms = [
         {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
         {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
@@ -91,6 +119,15 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         let sec = pid.split("/")[0];
         let page =  await api_call("pages/" + pid + "?lang=" + lang);
         let section =  await api_call(`files/${sec}/_section.yml`);
+        let languages = await api_call(`files/_data/languages.yml`);
+
+        self.dispatchEvent(new CustomEvent("page:dataLoaded", {
+            detail: {
+                lang: lang,
+                pid: pid,
+                languages: languages
+            }
+        }));
 
         console.log(page);
         let isExisting = true;
@@ -141,4 +178,3 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 
 </script>
 
-<page-edit></page-edit>
