@@ -1,11 +1,16 @@
 desc: Startseite
 ptags:
-  - name: Immer anzeigen
-    value: show_always
+  - text: In Navigationsleiste anzeigen
+    key: show_always
+is_sortable: true;
 
-fields:
-  - name: wumme
-    type:
+forms:
+  - key: navi_title
+    type: text
+    name: Titel in der Navigation
+    title: Wenn der Page-Tag In Navigationsleiste anzeigen aktiv ist, diesen wert als Titel nehmen. (Max. 30 Zeichen)
+    attrs:
+      maxlength: 30
 
 defaults:
   layout: xy

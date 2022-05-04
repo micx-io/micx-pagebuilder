@@ -2,7 +2,7 @@
 
 define("DEV_MODE", (bool)"1");
 define("CONF_SSH_KEY_FILE", "/opt/ssh_keys");
-define("STANDALONE", (bool)"1");
+define("STANDALONE", (bool)"0");
 define("STANDALONE_PATH", "/opt/mock/repos/demo1-weba");
 define("STANDALONE_DOC_PATH", "/docs");
 

@@ -44,8 +44,8 @@
     </div>
     <div ka:for="let curForm of forms" class="mt-2 row">
 
-            <div class="col-4 col-lg-2"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
-            <div class="col-7 col-lg-9">
+            <div class="col-4 col-lg-3"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
+            <div class="col-7 col-lg-8">
                 <input ka:if="curForm.type == 'text'"
                        kap:attr="curForm.attrs" class="form-control"
                        kap:bind="page[curForm.key]">
@@ -92,26 +92,31 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 
 
 
-    const defaultForms = [
-        {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
-        {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
-        {key: "published", name: "", type: "switch", checklabel: "Diese Seite veröffentlichen"},
-        {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
-            desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."
-        },
-        {key: "title", name: "Seiten-Titel", type: "text", attrs: {disabled: false},
-            title: "Festen Link angeben: Bitte freilassen, wenn Links automatisch angelegt werden sollen."},
-        {key: "description", name: "Kurzbeschreibung", type: "text", attrs: {disabled: false, maxlength: 160},
-            title: "Kurzbeschreibung: So erscheint Ihre Website in den Suchergebnissen. (Max. 160 Zeichen)"},
+    function getDefaultSet (section) {
+        let defaultForms = [
+            {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
+            {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
+            {key: "layout", name: "Layout", type: "text", attrs: {disabled: true}},
+            {key: "published", name: "", type: "switch", checklabel: "Diese Seite veröffentlichen"},
+            {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
+                desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."
+            },
+            {key: "title", name: "Seiten-Titel", type: "text", attrs: {disabled: false},
+                title: "Festen Link angeben: Bitte freilassen, wenn Links automatisch angelegt werden sollen."},
+            {key: "description", name: "Kurzbeschreibung", type: "text", attrs: {disabled: false, maxlength: 160},
+                title: "Kurzbeschreibung: So erscheint Ihre Website in den Suchergebnissen. (Max. 160 Zeichen)"},
 
-        {key: "order", name: "Sortierung", type: "text", attrs: {disabled: false, type:"number",maxlength: 160},
-            title: "Kleinere Werte werden zuerst angezeigt (Nur für Listen)"},
+        ];
+        if (section.is_sortable === true)
+            defaultForms.push({key: "order", name: "Sortierung", type: "text", attrs: {disabled: false, type:"number"},
+                    title: "Kleinere Werte werden zuerst angezeigt (Nur für Listen)"});
+        if (typeof section.ptags !== "undefined" && section.ptags.length > 0)
+            defaultForms.push({key: "ptags", name: "Page-Tags", type: "multi", options: section.ptags,
+                    title: "Optionen, wie die Seite angezeigt wird"}
+            );
+        return defaultForms;
+    }
 
-        {key: "ptags", name: "Page-Tags", type: "multi", options: [
-                {value: "show", text: "Auf Startseite anzeigen"}
-            ],
-            title: "Kleinere Werte werden zuerst angezeigt (Nur für Listen)"},
-    ];
 
     ka_define("page-edit", async(self, tpl) => {
         let pid = KaToolsV1.route.search.get("pid");
@@ -120,6 +125,8 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         let page =  await api_call("pages/" + pid + "?lang=" + lang);
         let section =  await api_call(`files/${sec}/_section.yml`);
         let languages = await api_call(`files/_data/languages.yml`);
+
+
 
         self.dispatchEvent(new CustomEvent("page:dataLoaded", {
             detail: {
@@ -145,16 +152,20 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
                 page = {...page, ...section.defaults}
         }
 
+        let forms = getDefaultSet(section);
+        if (Array.isArray(section.forms))
+            section.forms.forEach(el => forms.push(el));
+
 
         let scope = {
             isExisting: isExisting,
             page: page,
             section: section,
-            forms: defaultForms,
+            forms: forms,
             $fn: {
 
                 save: () => {
-                    api_call("files/_data/translations.yml", "POST", translations);
+                    api_call(`pages/_data/${pid}?lang=${lang}`, "POST", page);
                 }
             }
         }
@@ -169,7 +180,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
           editor.innerHTML = code
         }
         let jar = CodeJar(self.querySelector("#editor1"), highlight);
-        jar.onUpdate(code => scope.page.content)
+        jar.onUpdate(code => scope.page.content = code)
 
 
 
