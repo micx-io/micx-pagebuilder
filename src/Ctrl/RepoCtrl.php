@@ -15,14 +15,12 @@ class RepoCtrl
         public BraceApp $app
     ){}
 
-    public function __invoke(RouteParams $routeParams, RepoConf $repoConf, ServerRequest $request)
+    public function __invoke(RouteParams $routeParams, RepoConf $repoConf, ServerRequest $request, VcsFactory $vcsFactory)
     {
-        $repo = new VcsFactory();
-        $repo->setAuthSshPrivateKey(phore_file(CONF_SSH_KEY_FILE)->assertReadable()->get_contents());
-        $repo->setCommitUser("pagebuilder", "pagebuilder@leuffen.de");
+
         $action = $request->getQueryParams()["a"] ?? null;
         if ($this->app->request->getMethod() === "GET") {
-            $r = $repo->repository($repoConf->getRepoDir(), $repoConf->repo);
+            $r = $vcsFactory->repository($repoConf->getRepoDir(), $repoConf->repo);
             if ( ! $r->exists()) {
                 $r->pull();
             }

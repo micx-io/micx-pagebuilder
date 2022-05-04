@@ -13,6 +13,7 @@ use Micx\FormMailer\Config\Config;
 use Micx\PageBuilder\Type\RepoConf;
 use Phore\Di\Container\Producer\DiService;
 use Phore\Di\Container\Producer\DiValue;
+use Phore\VCS\VcsFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 
@@ -30,6 +31,14 @@ AppLoader::extend(function () {
             CONF_SUBSCRIPTION_CLIENT_SECRET
         )
     );
+
+    $app->define("vcsFactory", new DiService(function () {
+        $repo = new VcsFactory();
+        $repo->setAuthSshPrivateKey(phore_file(CONF_SSH_KEY_FILE)->assertReadable()->get_contents());
+        $repo->setCommitUser("pagebuilder", "pagebuilder@leuffen.de");
+        return $repo;
+    }));
+
     $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
         if (STANDALONE === true) {
             $repoConf = new RepoConf();

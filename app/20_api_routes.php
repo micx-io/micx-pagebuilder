@@ -22,6 +22,7 @@ use Micx\PageBuilder\Ctrl\PageCtrl;
 use Micx\PageBuilder\Ctrl\PageListCtrl;
 use Micx\PageBuilder\Ctrl\RepoCtrl;
 use Phore\Mail\PhoreMailer;
+use Phore\VCS\VcsFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 AppLoader::extend(function (BraceApp $app) {
@@ -38,6 +39,10 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("GET@$mount", function() {
         return ["system" => "micx pagebuilder", "status" => "ok"];
+    });
+
+    $app->router->on("GET@/pub-key", function (VcsFactory $vcsFactory) {
+       return ["ssh_public_key"=>$vcsFactory->createSshPublicKey()];
     });
 
     $app->router->on("GET@/e/:subscription_id/:scope_id*", function () use ($app) {
