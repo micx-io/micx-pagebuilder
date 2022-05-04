@@ -6,3 +6,6 @@ ptags:
 fields:
   - name: wumme
     type:
+
+defaults:
+  layout: xy

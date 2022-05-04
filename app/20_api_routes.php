@@ -18,6 +18,7 @@ use Micx\FormMailer\Config\Config;
 use Micx\PageBuilder\Ctrl\FileCtrl;
 use Micx\PageBuilder\Ctrl\JsCtrl;
 use Micx\PageBuilder\Ctrl\PageCtrl;
+use Micx\PageBuilder\Ctrl\PageListCtrl;
 use Phore\Mail\PhoreMailer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -29,6 +30,7 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class);
 
 
     $app->router->on("GET@$mount", function() {

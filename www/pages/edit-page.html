@@ -13,6 +13,9 @@
 
 
 <template id="languageListTpl">
+    <div ka:if="isExisting === false" class="alert alert-primary">
+        Diese Seite existiert noch nicht. Mit Klick auf Speichern wird diese anglegt.
+    </div>
     <div ka:for="let curForm of forms" class="mt-2 row">
 
             <div class="col-4 col-lg-2"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
@@ -20,7 +23,14 @@
                 <input ka:if="curForm.type == 'text'"
                        kap:attr="curForm.attrs" class="form-control"
                        kap:bind="page[curForm.key]">
-                <span kap:textContent="curForm.desc " class="text-muted small"></span>
+
+
+                <div ka:if="curForm.type == 'switch'" class="form-check form-switch">
+                    <label class="form-check-label mt-2 mb-2">
+                        <input kap:bind="page[curForm.key]" type="checkbox" class="form-check-input" >
+                        <span kap:textContent="curForm.checklabel"></span>
+                    </label>
+                </div>
 
                 <div ka:if="curForm.type == 'multi'" class="form-check">
                     <label ka:for="let opt of curForm.options" class="form-check-label mt-1">
@@ -28,6 +38,7 @@
                         <span kap:textContent="opt.text"></span>
                     </label>
                 </div>
+                <span kap:textContent="curForm.desc " class="text-muted small"></span>
             </div>
             <div class="col-1 col-lg-1 text-center">
                 <i ka:if="curForm.title != null" class="bi bi-info-circle fs-3" data-bs-toggle="tooltip" kap:attr:title="curForm.title"></i>
@@ -56,6 +67,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
     const defaultForms = [
         {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
         {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
+        {key: "published", name: "", type: "switch", checklabel: "Diese Seite veröffentlichen"},
         {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
             desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."
         },
@@ -80,7 +92,25 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         let page =  await api_call("pages/" + pid + "?lang=" + lang);
         let section =  await api_call(`files/${sec}/_section.yml`);
 
+        console.log(page);
+        let isExisting = true;
+
+        // New site
+        if (typeof page.error !== "undefined") {
+            isExisting = false;
+            page = {
+                pid: pid,
+                lang: lang,
+                published: false,
+                ptags: []
+            }
+            if (typeof section.defaults !== undefined)
+                page = {...page, ...section.defaults}
+        }
+
+
         let scope = {
+            isExisting: isExisting,
             page: page,
             section: section,
             forms: defaultForms,
