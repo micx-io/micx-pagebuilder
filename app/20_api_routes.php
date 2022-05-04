@@ -19,6 +19,7 @@ use Micx\PageBuilder\Ctrl\FileCtrl;
 use Micx\PageBuilder\Ctrl\JsCtrl;
 use Micx\PageBuilder\Ctrl\PageCtrl;
 use Micx\PageBuilder\Ctrl\PageListCtrl;
+use Micx\PageBuilder\Ctrl\RepoCtrl;
 use Phore\Mail\PhoreMailer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -31,13 +32,14 @@ AppLoader::extend(function (BraceApp $app) {
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/repo", RepoCtrl::class);
 
 
     $app->router->on("GET@$mount", function() {
         return ["system" => "micx pagebuilder", "status" => "ok"];
     });
 
-    $app->router->on("GET@/*", function () use ($app) {
+    $app->router->on("GET@/e/:subscription_id/:scope_id*", function () use ($app) {
          return $app->responseFactory->createResponseWithBody(file_get_contents(__DIR__ . "/../www/page.html"), 200, ["Content-Type" => "text/html"]);
     });
 

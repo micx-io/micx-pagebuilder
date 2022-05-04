@@ -36,14 +36,21 @@ AppLoader::extend(function (BraceApp $app) {
 
         new CallbackMiddleware(function ($request, $handler) use ($app) {
             $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
+                if (STANDALONE === true) {
+                    $repoConf = new RepoConf();
+                    $repoConf->repo_dir = STANDALONE_PATH;
+                    $repoConf->doc_dir = STANDALONE_DOC_PATH;
+                    return $repoConf;
+                }
                 $scopeId = $routeParams->get("scope_id");
                 $data = $subscription->getClientPrivateConfig(null);
-                out($data);
+                
                 if ( ! isset ($data["scopes"][$scopeId]))
                     throw new \InvalidArgumentException("Invalid scope: '$scopeId' in subscription '$subscription->subscription_id'");
                 $scope = phore_hydrate($data["scopes"][$scopeId], RepoConf::class);
                 $scope->__subscriptionId = $subscription->subscription_id;
                 $scope->__scopeId = $scopeId;
+                $scope->repo_dir = CONF_REPO_PATH . "/$scope->__subscriptionId-$scope->__scopeId";
                 return $scope;
             }));
             return $handler->handle($request);

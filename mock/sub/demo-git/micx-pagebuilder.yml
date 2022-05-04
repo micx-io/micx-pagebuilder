@@ -1,0 +1,9 @@
+active: true
+public:
+  host_config: abc
+
+private:
+  scopes:
+    weba:
+      repo: git@github.com:dermatthes/leu-tpl-kingsquest.git
+      doc_dir: /docs

@@ -44,6 +44,9 @@ class KasimirV1_Router extends HTMLElement {
 
     async connectedCallback() {
         await KaToolsV1.domReady();
+        let pathname = location.pathname;
+        if (pathname.endsWith("/"))
+            pathname = pathname.slice(0, -1);
 
         let foundRouteElement = null;
         let defaultElement = null;
@@ -61,9 +64,7 @@ class KasimirV1_Router extends HTMLElement {
                 KaToolsV1.routes[e.getAttribute("route_name")] = route;
 
                 let regex = new RegExp(this.routeDef2RegEx(route));
-                let pathname = location.pathname;
-                if (pathname.endsWith("/"))
-                    pathname = pathname.slice(0, -1);
+
                 let match = regex.exec(pathname);
                 if (match === null)
                     continue;
@@ -78,7 +79,8 @@ class KasimirV1_Router extends HTMLElement {
         if (foundRouteElement !== null)
             this.append(ka_import_node(foundRouteElement));
         else
-            this.append(ka_import_node(defaultElement));
+            console.error("[ka-router] Undefined route: " + pathname);
+            //this.append(ka_import_node(defaultElement));
     }
 
 }

@@ -4,3 +4,5 @@
 report
 composer.lock
 
+/ssh_keys
+/ssh_keys.pub

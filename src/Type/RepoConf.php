@@ -21,6 +21,11 @@ class RepoConf
 
     public string $repo;
 
+    /**
+     * @var string|null
+     */
+    public string $repo_dir;
+
     public string $doc_dir;
 
 
@@ -31,7 +36,7 @@ class RepoConf
      */
     public function getRepoDir() : PhoreDirectory
     {
-        return phore_dir(CONF_REPO_PATH . "/$this->__subscriptionId-$this->__scopeId");
+        return phore_dir($this->repo_dir);
     }
 
     public function getRepoDocPath($path = null) : PhoreUri

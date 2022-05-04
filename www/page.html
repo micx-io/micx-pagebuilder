@@ -32,15 +32,15 @@
     <section class="container mt-5">
 
         <ka-router>
-            <template route_name="index" route="/{sub_id}/{site_id}">
+            <template route_name="index" route="/e/{sub_id}/{site_id}">
                 <ka-include src="/pages/index.html"></ka-include>
             </template>
 
-            <template route_name="page" route="/{sub_id}/{site_id}/page">
+            <template route_name="page" route="/e/{sub_id}/{site_id}/page">
                 <ka-include src="/pages/edit-page.html"></ka-include>
             </template>
 
-            <template route_name="translation" route="/{sub_id}/{site_id}/translation">
+            <template route_name="translation" route="/e/{sub_id}/{site_id}/translation">
                 <ka-include src="/pages/translation.html"></ka-include>
             </template>
         </ka-router>

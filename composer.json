@@ -22,7 +22,7 @@
     "lack/subscription": "*",
     "phore/hydrator": "*",
     "phore/http-client": "*",
-    "phore/mail": "*"
+    "phore/vcs": "*"
   },
   "require-dev": {
     "phore/tester": "*"

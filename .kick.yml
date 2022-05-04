@@ -11,11 +11,11 @@ config_file:
 command:
   build:
     - "composer update"
-    - "sudo mkdir /config && sudo chmod 777 /config"
     - "sudo chmod -R 777 /opt/mock/repos"
 
-
   run:
+    - "sudo -E mkdir -p /data"
+    - "sudo -E chmod -R 777 /data"
   dev:
   test:
 
