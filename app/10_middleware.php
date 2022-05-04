@@ -3,6 +3,9 @@
 namespace App;
 
 
+use Brace\Auth\Basic\AuthBasicMiddleware;
+use Brace\Auth\Basic\BasicAuthToken;
+use Brace\Auth\Basic\Validator\LambdaAuthValidator;
 use Brace\Body\BodyMiddleware;
 use Brace\Core\AppLoader;
 use Brace\Core\Base\CallbackMiddleware;
@@ -34,25 +37,19 @@ AppLoader::extend(function (BraceApp $app) {
             return $subscription->isAllowedOrigin($origin);
         }),
 
+        new AuthBasicMiddleware(new LambdaAuthValidator(function(BasicAuthToken $basicAuthToken, RepoConf $repoConf) {
+            if (STANDALONE === true) {
+                return true;
+            }
+            foreach ($repoConf->auth as $curAuth) {
+                [$user, $hash] = explode(":", $curAuth);
+                if ($basicAuthToken->user === $user && password_verify($basicAuthToken->passwd, $hash))
+                    return true;
+            }
+            return false;
+        })),
         new CallbackMiddleware(function ($request, $handler) use ($app) {
-            $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
-                if (STANDALONE === true) {
-                    $repoConf = new RepoConf();
-                    $repoConf->repo_dir = STANDALONE_PATH;
-                    $repoConf->doc_dir = STANDALONE_DOC_PATH;
-                    return $repoConf;
-                }
-                $scopeId = $routeParams->get("scope_id");
-                $data = $subscription->getClientPrivateConfig(null);
-                
-                if ( ! isset ($data["scopes"][$scopeId]))
-                    throw new \InvalidArgumentException("Invalid scope: '$scopeId' in subscription '$subscription->subscription_id'");
-                $scope = phore_hydrate($data["scopes"][$scopeId], RepoConf::class);
-                $scope->__subscriptionId = $subscription->subscription_id;
-                $scope->__scopeId = $scopeId;
-                $scope->repo_dir = CONF_REPO_PATH . "/$scope->__subscriptionId-$scope->__scopeId";
-                return $scope;
-            }));
+
             return $handler->handle($request);
         }),
 

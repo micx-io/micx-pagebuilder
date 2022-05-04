@@ -6,8 +6,11 @@ use Brace\Core\BraceApp;
 use Brace\Dbg\BraceDbg;
 use Brace\Mod\Request\Zend\BraceRequestLaminasModule;
 use Brace\Router\RouterModule;
+use Brace\Router\Type\RouteParams;
 use Lack\Subscription\Brace\SubscriptionClientModule;
+use Lack\Subscription\Type\T_Subscription;
 use Micx\FormMailer\Config\Config;
+use Micx\PageBuilder\Type\RepoConf;
 use Phore\Di\Container\Producer\DiService;
 use Phore\Di\Container\Producer\DiValue;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,8 +23,31 @@ AppLoader::extend(function () {
     $app = new BraceApp();
     $app->addModule(new BraceRequestLaminasModule());
     $app->addModule(new RouterModule());
-    $app->addModule(new SubscriptionClientModule("/opt/mock/sub", "micx-pagebuilder"));
+    $app->addModule(
+        new SubscriptionClientModule(
+            CONF_SUBSCRIPTION_ENDPOINT,
+            CONF_SUBSCRIPTION_CLIENT_ID,
+            CONF_SUBSCRIPTION_CLIENT_SECRET
+        )
+    );
+    $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
+        if (STANDALONE === true) {
+            $repoConf = new RepoConf();
+            $repoConf->repo_dir = STANDALONE_PATH;
+            $repoConf->doc_dir = STANDALONE_DOC_PATH;
+            return $repoConf;
+        }
+        $scopeId = $routeParams->get("scope_id");
+        $data = $subscription->getClientPrivateConfig(null);
 
+        if ( ! isset ($data["scopes"][$scopeId]))
+            throw new \InvalidArgumentException("Invalid scope: '$scopeId' in subscription '$subscription->subscription_id'");
+        $scope = phore_hydrate($data["scopes"][$scopeId], RepoConf::class);
+        $scope->__subscriptionId = $subscription->subscription_id;
+        $scope->__scopeId = $scopeId;
+        $scope->repo_dir = CONF_REPO_PATH . "/$scope->__subscriptionId-$scope->__scopeId";
+        return $scope;
+    }));
     $app->define("app", new DiValue($app));
 
 

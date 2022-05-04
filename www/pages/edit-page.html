@@ -7,15 +7,15 @@
     </div>
 
     <div class="col-12 col-xl-8">
-        <ka-tpl class="" wait="page:dataLoaded@page-edit">
+        <ka-tpl class="clearfix" wait="page:dataLoaded@page-edit">
             <h4 class="float-start ">
                 <i class="bi bi-file-earmark-post fs-1 me-3"></i>
                 <span kap:textContent="$event.detail.pid"></span>
-                <span kap:textContent="$event.detail.lang" class=" badge bg-primary p-1"></span>
+                <span kap:textContent="$event.detail.lang" class="badge bg-light border text-dark p-1"></span>
             </h4>
 
             <div class="dropdown float-end">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
                     Sprache: <span kap:textContent="$event.detail.lang"></span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="langSelect">
@@ -23,12 +23,8 @@
 
                 </ul>
             </div>
-
-            <p>
-
-            </p>
         </ka-tpl>
-        <div class="clearfix mb-4"></div>
+        <div class="clearfix mb-4 w-100"></div>
         <page-edit></page-edit>
     </div>
 

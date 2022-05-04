@@ -28,6 +28,11 @@ class RepoConf
 
     public string $doc_dir;
 
+    /**
+     * @var string[]
+     */
+    public array $auth = [];
+
 
     /**
      * The directory the git-repo is cloned into

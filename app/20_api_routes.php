@@ -3,6 +3,7 @@ namespace App;
 
 
 
+use Brace\Auth\Basic\RequireValidAuthTokenMiddleware;
 use Brace\Core\AppLoader;
 use Brace\Core\BraceApp;
 use http\Message\Body;
@@ -29,10 +30,10 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("GET@$mount/pagebuilder.js", JsCtrl::class);
 
-    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class);
-    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class);
-    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class);
-    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/repo", RepoCtrl::class);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class, [RequireValidAuthTokenMiddleware::class]);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class, [RequireValidAuthTokenMiddleware::class]);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class,  [RequireValidAuthTokenMiddleware::class]);
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/repo", RepoCtrl::class, [RequireValidAuthTokenMiddleware::class]);
 
 
     $app->router->on("GET@$mount", function() {
@@ -41,6 +42,6 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("GET@/e/:subscription_id/:scope_id*", function () use ($app) {
          return $app->responseFactory->createResponseWithBody(file_get_contents(__DIR__ . "/../www/page.html"), 200, ["Content-Type" => "text/html"]);
-    });
+    },  [RequireValidAuthTokenMiddleware::class]);
 
 });

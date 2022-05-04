@@ -19,6 +19,7 @@
     "brace/mod-body": "*",
     "brace/mod-router": "*",
     "brace/mod-request-laminas": "*",
+    "brace/mod-auth-basic": "*",
     "lack/subscription": "*",
     "phore/hydrator": "*",
     "phore/http-client": "*",

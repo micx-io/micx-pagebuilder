@@ -18,8 +18,8 @@
                             </a>
                         </div>
                         <div class="col-6">
-                            <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-primary me-2">
-                                <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][curLang].pid, lang: curLang})" class="text-white">
+                            <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-light border  me-2">
+                                <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][curLang].pid, lang: curLang})" class="text-black-50">
                                     <span kap:textContent="curLang"></span>
                                     <i class="bi bi-eye-fill" ka:if="curSection.pages[pid][curLang].published"></i>
                                     <i class="bi bi-eye-slash"ka:if="! curSection.pages[pid][curLang].published"></i>
