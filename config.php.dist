@@ -4,7 +4,7 @@ define("DEV_MODE", (bool)"%DEV_MODE?0%");
 define("CONF_SSH_KEY_FILE", "%CONF_SSH_KEY_FILE?/opt/ssh_keys%");
 define("STANDALONE", (bool)"%STANDALONE?0%");
 define("STANDALONE_PATH", "%STANDALONE_PATH?/opt/mock/repos/demo1-weba%");
-define("STANDALONE_DOC_PATH", "%STANDALONE_PATH?/docs%");
+define("STANDALONE_DOC_PATH", "%STANDALONE_DOC_PATH?/docs%");
 
 const CONF_API_MOUNT = "/v1/pagebuilder";
 
