@@ -42,19 +42,23 @@
 
             <div class="col-4 col-lg-3"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
             <div class="col-7 col-lg-8">
-                <input ka:if="curForm.type == 'text'"
+                <input ka:if="curForm.type === 'text'"
                        kap:attr="curForm.attrs" class="form-control"
                        kap:bind="page[curForm.key]">
 
+                <select ka:if="curForm.type === 'select'"
+                       kap:attr="curForm.attrs" class="form-select" kap:options="curForm.options"
+                        kap:bind="page[curForm.key]"></select>
 
-                <div ka:if="curForm.type == 'switch'" class="form-check form-switch">
+
+                <div ka:if="curForm.type === 'switch'" class="form-check form-switch">
                     <label class="form-check-label mt-2 mb-2">
                         <input kap:bind="page[curForm.key]" type="checkbox" class="form-check-input" >
                         <span kap:textContent="curForm.checklabel"></span>
                     </label>
                 </div>
 
-                <div ka:if="curForm.type == 'multi'" class="form-check">
+                <div ka:if="curForm.type === 'multi'" class="form-check">
                     <label ka:for="let opt of curForm.options" class="form-check-label mt-1">
                         <input kap:bindarray="page[curForm.key]" kap:value="opt.key" type="checkbox" class="form-check-input" >
                         <span kap:textContent="opt.text"></span>
@@ -89,10 +93,15 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 
 
     function getDefaultSet (section) {
+        let layoutOptions = [];
+        for(let o of section.layouts) {
+            layoutOptions.push({text: `${o.text} (${o.layout})`, value: o.layout});
+        }
+
         let defaultForms = [
             {key: "pid", name: "Page-Id", type: "text", attrs: {disabled: true}},
             {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
-            {key: "layout", name: "Layout", type: "text", attrs: {disabled: true}},
+            {key: "layout", name: "Layout", type: "select", attrs: {}, options:layoutOptions},
             {key: "published", name: "", type: "switch", checklabel: "Diese Seite veröffentlichen"},
             {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
                 desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."

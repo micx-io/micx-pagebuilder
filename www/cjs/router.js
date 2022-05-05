@@ -90,12 +90,12 @@ customElements.define("ka-router", KasimirV1_Router);
 
 class KaToolsV1_Include extends HTMLElement {
 
-    _importScriptRecursive(node) {
+    _importScriptRecursive(node, src) {
         let chels = node instanceof HTMLTemplateElement ? node.content.childNodes : node.childNodes;
 
         for (let s of chels) {
             if (s.tagName !== "SCRIPT") {
-                this._importScriptRecursive(s);
+                this._importScriptRecursive(s, src);
                 continue;
             }
             let n = document.createElement("script");
@@ -103,7 +103,21 @@ class KaToolsV1_Include extends HTMLElement {
             for (let attName of s.getAttributeNames())
                 n.setAttribute(attName, s.getAttribute(attName));
             n.innerHTML = s.innerHTML;
-            s.replaceWith(n);
+            try {
+                let handler = onerror;
+                window.onerror = (msg, url, line) => {
+                    console.error(`[ka-include]: Script error in '${src}': ${msg} in line ${line}:\n>>>>>>>>\n`,
+                        n.innerHTML.split("\n")[line-1],
+                        "\n<<<<<<<<\n",
+                        n.innerHTML);
+                }
+                console.log (n);
+                s.replaceWith(n);
+                window.onerror = handler;
+            } catch (e) {
+                console.error(`[ka-include]: Script error in '${src}': ${e}`, e);
+                //throw e;
+            }
         }
     }
 
@@ -111,7 +125,7 @@ class KaToolsV1_Include extends HTMLElement {
         let src = this.getAttribute("src");
         let result = await fetch(src);
         this.innerHTML = await result.text();
-        this._importScriptRecursive(this);
+        this._importScriptRecursive(this, src);
     }
 
 }

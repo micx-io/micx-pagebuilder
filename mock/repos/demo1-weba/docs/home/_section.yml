@@ -4,6 +4,10 @@ ptags:
     key: show_always
 is_sortable: true;
 
+layouts:
+  - layout: path/to/layout
+    text: Startseite der Website
+
 forms:
   - key: navi_title
     type: text
