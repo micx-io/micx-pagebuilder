@@ -59,6 +59,7 @@ class FrontMatterFile
         throw new FileNotFoundException("Page not found '$pid' (Lang: '$lang') location: $rootDir");
     }
 
+
     public static function WritePage ($rootDir, array $data)
     {
         $rootDir = phore_dir($rootDir);
