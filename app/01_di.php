@@ -17,7 +17,7 @@ use Phore\VCS\VcsFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 
-BraceDbg::SetupEnvironment(true, ["192.168.178.20", "localhost", "localhost:8080"]);
+BraceDbg::SetupEnvironment(true, ["192.168.178.20", "localhost", "localhost:5000"]);
 
 
 AppLoader::extend(function () {
