@@ -36,7 +36,6 @@ AppLoader::extend(function (BraceApp $app) {
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class,  [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/repo", RepoCtrl::class, [RequireValidAuthTokenMiddleware::class]);
 
-
     $app->router->on("GET@$mount", function() {
         return ["system" => "micx pagebuilder", "status" => "ok"];
     });
