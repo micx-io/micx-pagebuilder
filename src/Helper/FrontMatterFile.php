@@ -37,7 +37,6 @@ class FrontMatterFile
         $this->file->set_contents($data);
     }
 
-
     public static function ReadPage ($rootDir, $pid, $lang)
     {
         $rootDir = phore_dir($rootDir);
