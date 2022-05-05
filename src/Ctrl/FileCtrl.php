@@ -23,7 +23,7 @@ class FileCtrl
             $body = $this->app->get("body");
             $file = $repoConf->getRepoDocPath($routeParams->get("file"));
             if ($file->getExtension() === "yml") {
-                $file->asFile()->set_yaml(phore_yaml_decode($body));
+                $file->asFile()->set_yaml(phore_json_decode($body));
                 return ["ok" => "success"];
             }
 

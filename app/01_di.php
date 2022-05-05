@@ -39,6 +39,7 @@ AppLoader::extend(function () {
         return $repo;
     }));
 
+
     $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
         if (STANDALONE === true) {
             $repoConf = new RepoConf();
