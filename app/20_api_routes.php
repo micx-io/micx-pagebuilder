@@ -21,7 +21,6 @@ use Micx\PageBuilder\Ctrl\JsCtrl;
 use Micx\PageBuilder\Ctrl\PageCtrl;
 use Micx\PageBuilder\Ctrl\PageListCtrl;
 use Micx\PageBuilder\Ctrl\RepoCtrl;
-use Phore\Mail\PhoreMailer;
 use Phore\VCS\VcsFactory;
 use Psr\Http\Message\ServerRequestInterface;
 

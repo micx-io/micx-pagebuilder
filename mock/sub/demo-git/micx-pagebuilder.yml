@@ -7,3 +7,5 @@ private:
     weba:
       repo: git@github.com:dermatthes/leu-tpl-kingsquest.git
       doc_dir: /docs
+      auth:
+        - "test:$6$FHRuwTEqCAVayrzD$T5yJz7wLd/By2BOC4ZD12Pm03Z1TecXR5nAs/8H8n6EqRZ/eCMoNC76VuybCDDG67hdAowE2burWb.UwpJu.c0"

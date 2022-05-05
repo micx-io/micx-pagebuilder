@@ -17,7 +17,7 @@ class RepoCtrl
 
     public function __invoke(RouteParams $routeParams, RepoConf $repoConf, ServerRequest $request, VcsFactory $vcsFactory)
     {
-
+        ignore_user_abort(true);
         $action = $request->getQueryParams()["a"] ?? null;
         if ($this->app->request->getMethod() === "GET") {
             $r = $vcsFactory->repository($repoConf->getRepoDir(), $repoConf->repo);
