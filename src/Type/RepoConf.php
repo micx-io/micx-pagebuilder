@@ -13,6 +13,7 @@ class RepoConf
      */
     public string|null $__subscriptionId;
 
+
     /**
      * @var string|null
      */
