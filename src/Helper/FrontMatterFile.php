@@ -72,5 +72,4 @@ class FrontMatterFile
         $f->write($data);
 
     }
-
 }
