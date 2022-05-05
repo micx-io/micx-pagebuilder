@@ -3,22 +3,22 @@
 
         <li ka:for="let curSection of sections" class="list-group-item  align-items-start">
 
-            <div class="ms-2 d-block w-100">
+            <div class="ms-0 d-block w-100">
                 <div class="fw-bold" kap:textContent="curSection.section_name"></div>
                 <span kap:textContent="curSection.section.desc" class="text-muted"></span>
             </div>
             <div class="badge bg-primary rounded-pill" kap:textContent="curSection.pages.length"></div>
 
             <ol class="list-group d-block w-100 list-group-flush">
-                <li ka:for="let pid in curSection.pages" class="list-group-item d-flex align-items-start">
+                <li ka:for="let pid in curSection.pages" class="list-group-item d-flex align-items-start pe-0 ps-0">
                     <div class="row w-100">
                         <div class="col-6">
                             <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][Object.keys(curSection.pages[pid])[0]].pid, lang: Object.keys(curSection.pages[pid])[0]})">
                                 <i class="bi bi-file-earmark-post me-2 "></i><span kap:textContent="pid"></span>
                             </a>
                         </div>
-                        <div class="col-6">
-                            <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-light border  me-2">
+                        <div class="col-6 text-end pe-0">
+                            <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-light border  ms-2">
                                 <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][curLang].pid, lang: curLang})" class="text-black-50">
                                     <span kap:textContent="curLang"></span>
                                     <i class="bi bi-eye-fill" ka:if="curSection.pages[pid][curLang].published"></i>

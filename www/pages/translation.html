@@ -38,9 +38,10 @@
         let languages =  await api_call("files/_data/languages.yml");
         let translations =  await api_call("files/_data/translations.yml");
         for (let key in translations) {
-            if (translations[key] === null)
+            if (Array.isArray(translations[key]) || translations[key] === null)
                 translations[key] = {}
         }
+        console.log(translations);
 
         tpl.render({
             languages: languages,
