@@ -17,7 +17,7 @@ class PageListCtrl
     public function __invoke(ServerRequest $request, RouteParams $routeParams)
     {
         $docPath = $this->repoConf->getRepoDocPath();
-
+        $permalinks = [];
         $list = [
             "sections" => [],
             "errors" => []
@@ -46,7 +46,7 @@ class PageListCtrl
                     continue;
                 [$pageId, $lang] = $fileNameArr;
                 try {
-                    $frontmatter = FrontMatterFile::ReadPage($docPath, $section["section_name"] . "/$pageId", $lang);
+                    $frontmatter = FrontMatterFile::ReadPage($docPath, $section["section_name"] . "/$pageId", $lang, $list["errors"], $permalinks);
                     if ($frontmatter["pid"] !== $section["section_name"] . "/$pageId")
                         throw new \InvalidArgumentException("pid mismatch between filename and yaml content: '{$frontmatter['pid']}'");
                     if ($frontmatter["lang"] !== $lang)

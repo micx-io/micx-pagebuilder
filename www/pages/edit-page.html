@@ -131,6 +131,8 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         let section =  await api_call(`files/${sec}/_section.yml`);
         let languages = await api_call(`files/_data/languages.yml`);
 
+        if(typeof page.published === "undefined")
+            page.published = true;
 
 
         self.dispatchEvent(new CustomEvent("page:dataLoaded", {

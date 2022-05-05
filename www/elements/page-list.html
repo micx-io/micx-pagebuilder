@@ -1,4 +1,7 @@
 <template id="sectionsListTpl">
+    <div ka:if="errors.length > 0" class="alert-warning">
+        <div ka:for="let error of errors" kap:textcontent="error"></div>
+    </div>
     <ol class="list-group">
 
         <li ka:for="let curSection of sections" class="list-group-item  align-items-start">
@@ -21,8 +24,8 @@
                             <span ka:for="let curLang in curSection.pages[pid]" class="badge bg-light border  ms-2">
                                 <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][curLang].pid, lang: curLang})" class="text-black-50">
                                     <span kap:textContent="curLang"></span>
-                                    <i class="bi bi-eye-fill" ka:if="curSection.pages[pid][curLang].published"></i>
-                                    <i class="bi bi-eye-slash"ka:if="! curSection.pages[pid][curLang].published"></i>
+                                    <i class="bi bi-eye-fill" ka:if="curSection.pages[pid][curLang].published !== false"></i>
+                                    <i class="bi bi-eye-slash"ka:if="curSection.pages[pid][curLang].published === false"></i>
                                 </a>
                             </span>
                         </div>
@@ -47,6 +50,7 @@
         console.log(response);
         tpl.render({
             sections: response.sections,
+            errors: response.errors,
             $fn: {
             }
         });

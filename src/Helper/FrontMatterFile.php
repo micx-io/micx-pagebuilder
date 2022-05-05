@@ -37,26 +37,36 @@ class FrontMatterFile
         $this->file->set_contents($data);
     }
 
-    public static function ReadPage ($rootDir, $pid, $lang)
+    public static function ReadPage ($rootDir, $pid, $lang, &$errors=[], &$permalinks=[])
     {
         $rootDir = phore_dir($rootDir);
 
         if ($rootDir->withRelativePath($pid . ".$lang.md")->isFile()) {
             $f = new self($rootDir->withRelativePath($pid . ".$lang.md")->asFile());
             $data = $f->read();
-            $data["pid"] = $pid;
-            $data["lang"] = $lang;
             $data["ftype"] = "html";
-            return $data;
         } else if ($rootDir->withRelativePath($pid . ".$lang.html")->isFile()) {
             $f = new self($rootDir->withRelativePath($pid . ".$lang.html")->asFile());
             $data = $f->read();
-            $data["pid"] = $pid;
-            $data["lang"] = $lang;
             $data["ftype"] = "html";
-            return $data;
+        } else {
+            throw new FileNotFoundException("Page not found '$pid' (Lang: '$lang') location: $rootDir");
         }
-        throw new FileNotFoundException("Page not found '$pid' (Lang: '$lang') location: $rootDir");
+        if ($data["pid"] !== $pid) {
+            $errors[] = "Page '$pid' [$lang] frontmatter mismatch: pid";
+            $data["pid"] = $pid;
+        }
+        if ($data["lang"] !== $lang) {
+            $errors[] = "Page '$pid' [$lang] frontmatter mismatch: lang";
+            $data["lang"] = $lang;
+        }
+        if (isset ($data["permalink"]) && $data["permalink"] !== null && $data["permalink"] !== "") {
+            if (isset($permalinks[$data["permalink"]])) {
+                $errors[] = "Permalink conflict '{$data['permalink']}': $pid [$lang] == {$permalinks[$data["permalink"]]}";
+            }
+            $permalinks[$data["permalink"]] = "$pid [$lang]";
+        }
+        return $data;
     }
 
 
