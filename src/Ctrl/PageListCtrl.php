@@ -41,7 +41,10 @@ class PageListCtrl
                 if ($file->getExtension() !== "html" && $file->getExtension() !== "md")
                     continue;
 
-                [$pageId, $lang] = explode(".", $file->getFilename());
+                $fileNameArr = explode(".", $file->getFilename());
+                if (count($fileNameArr) !== 2)
+                    continue;
+                [$pageId, $lang] = $fileNameArr;
                 try {
                     $frontmatter = FrontMatterFile::ReadPage($docPath, $section["section_name"] . "/$pageId", $lang);
                     if ($frontmatter["pid"] !== $section["section_name"] . "/$pageId")
