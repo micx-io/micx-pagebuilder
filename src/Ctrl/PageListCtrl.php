@@ -31,6 +31,9 @@ class PageListCtrl
             if ( ! $defFile->exists())
                 continue;
 
+            if ($filterPageId !== null && explode("/", $filterPageId)[0] !== (string)$path->getRelPath())
+                continue;
+
             $section = [
                 "section_name" => $path->getRelPath(),
                 "section" => $defFile->asFile()->get_yaml(),
