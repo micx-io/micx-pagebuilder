@@ -32,6 +32,8 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class, [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class, [RequireValidAuthTokenMiddleware::class]);
+    $app->router->on("POST@$mount/:subscription_id/:scope_id/do/copy/page", [PageCtrl::class, "copyPage"], [RequireValidAuthTokenMiddleware::class]);
+
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/list/pages", PageListCtrl::class,  [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/repo", RepoCtrl::class, [RequireValidAuthTokenMiddleware::class]);
 

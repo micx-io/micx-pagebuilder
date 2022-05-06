@@ -81,6 +81,7 @@ class FrontMatterFile
         $file->asFile()->touch();
         $f = new self($file->asFile());
         unset($data["ftype"]);
+        ksort($data);
         $f->write($data);
 
     }

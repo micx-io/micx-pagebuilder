@@ -17,6 +17,23 @@ class PageCtrl
         protected BraceApp $app
     ){}
 
+
+    public static function copyPage(ServerRequest $request, RouteParams $routeParams, RepoConf $repoConf) {
+        $srcPageId = $request->getQueryParams()["src_page_id"];
+        $targetPageId = $request->getQueryParams()["target_page_id"];
+        $srcLang = $request->getQueryParams()["src_lang"];
+        $targetLang = $request->getQueryParams()["target_lang"];
+
+        $data = FrontMatterFile::ReadPage($repoConf->getRepoDocPath(), $srcPageId, $srcLang);
+        $data["pid"] = $targetPageId;
+        $data["lang"] = $targetLang;
+        unset($data["permalink"]);
+        FrontMatterFile::WritePage($repoConf->getRepoDocPath(), $data);
+        return ["ok"=>"success"];
+    }
+
+
+
     public function __invoke(ServerRequest $request, RouteParams $routeParams)
     {
         $pageId = $routeParams->get("page_id");

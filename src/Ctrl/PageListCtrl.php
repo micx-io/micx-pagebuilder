@@ -16,6 +16,7 @@ class PageListCtrl
 
     public function __invoke(ServerRequest $request, RouteParams $routeParams)
     {
+        $filterPageId = $request->getQueryParams()["filterPid"] ?? null;
         $docPath = $this->repoConf->getRepoDocPath();
         $permalinks = [];
         $list = [
@@ -45,6 +46,10 @@ class PageListCtrl
                 if (count($fileNameArr) !== 2)
                     continue;
                 [$pageId, $lang] = $fileNameArr;
+
+                if ($filterPageId !== null && $filterPageId !== $pageId)
+                    continue;
+
                 try {
                     $frontmatter = FrontMatterFile::ReadPage($docPath, $section["section_name"] . "/$pageId", $lang, $list["errors"], $permalinks);
                     if ($frontmatter["pid"] !== $section["section_name"] . "/$pageId")

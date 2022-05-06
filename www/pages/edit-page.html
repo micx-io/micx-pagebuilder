@@ -25,19 +25,59 @@
             </div>
         </ka-tpl>
         <div class="clearfix mb-4 w-100"></div>
+
+        <create-page></create-page>
         <page-edit></page-edit>
     </div>
 
 </div>
+
+
+<template id="createNewPage">
+    <div class="alert alert-primary">
+        <div>Diese Seite existiert noch nicht. Bitte wählen Sie eine Seite, aus der die Daten kopiert werden sollen</div>
+        <select kap:bind="$scope.selected" kap:options="languages"></select>
+        <button kap:on:click="$fn.click()">Seite anlegen</button>
+    </div>
+
+</template>
+
+<script>
+    ka_define("create-page", async (self, $tpl, $event) => {
+        console.log($event);
+        let response =  await api_call("list/pages", "GET", null, {
+            limitPid: KaToolsV1.route.search.get("pid")
+        });
+        console.log(response);
+        let scope = {
+            languages: Object.keys(response.sections[0].pages[KaToolsV1.route.search.get("pid").split("/")[1]]),
+            selected: null,
+            $fn: {
+                click: async () => {
+                    let response = await api_call("do/copy/page", "POST", null, {
+                        target_page_id: KaToolsV1.route.search.get("pid"),
+                        src_page_id:KaToolsV1.route.search.get("pid"),
+                        target_lang: KaToolsV1.route.search.get("lang"),
+                        src_lang: scope.selected,
+                    });
+                    window.location.reload();
+                }
+            }
+        }
+        $tpl.render(scope)
+
+    }, "#createNewPage", "page:pageNotFound@page-edit");
+
+</script>
+
+
 <script type="module">
     import {CodeJar} from 'https://medv.io/codejar/codejar.js'
 </script>
 
 
 <template id="languageListTpl">
-    <div ka:if="isExisting === false" class="alert alert-primary">
-        Diese Seite existiert noch nicht. Mit Klick auf Speichern wird diese anglegt.
-    </div>
+
     <div ka:for="let curForm of forms" class="mt-2 row">
 
             <div class="col-4 col-lg-3"><label class="col-form-label" kap:textContent="curForm.name"></label></div>
@@ -73,10 +113,6 @@
     </div>
     <pre id="editor1" kap:textContent="page.content" class="w-100 border bg-light mt-4 p-3" style=" font-size: 16px">
     </pre>
-
-
-
-
 
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <div class="container text-end">
@@ -143,20 +179,20 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             }
         }));
 
-        console.log(page);
+
         let isExisting = true;
 
         // New site
         if (typeof page.error !== "undefined") {
             isExisting = false;
-            page = {
-                pid: pid,
-                lang: lang,
-                published: false,
-                ptags: []
-            }
-            if (typeof section.defaults !== undefined)
-                page = {...page, ...section.defaults}
+            self.dispatchEvent(new CustomEvent("page:pageNotFound", {
+                detail: {
+                    lang: lang,
+                    pid: pid,
+                    languages: languages
+                }
+            }));
+            return;
         }
 
         let forms = getDefaultSet(section);
