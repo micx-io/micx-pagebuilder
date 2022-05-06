@@ -18,7 +18,6 @@ class RepoConf
      */
     public string|null $__scopeId;
 
-
     public string $repo;
 
     /**
