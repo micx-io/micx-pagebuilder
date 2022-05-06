@@ -47,7 +47,7 @@
 
         console.log($event);
         let response =  await api_call("list/pages", "GET", null, {
-            limitPid: KaToolsV1.route.search.get("pid")
+            filterPid: KaToolsV1.route.search.get("pid")
         });
         console.log(response, KaToolsV1.route);
         let pidPart = KaToolsV1.route.search.get("pid").split("/")[1];

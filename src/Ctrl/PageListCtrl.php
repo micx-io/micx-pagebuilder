@@ -47,7 +47,7 @@ class PageListCtrl
                     continue;
                 [$pageId, $lang] = $fileNameArr;
 
-                if ($filterPageId !== null && $filterPageId !== $pageId)
+                if ($filterPageId !== null && $filterPageId !== $section["section_name"] . "/" . $pageId)
                     continue;
 
                 try {
