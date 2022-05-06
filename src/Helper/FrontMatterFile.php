@@ -44,7 +44,7 @@ class FrontMatterFile
         if ($rootDir->withRelativePath($pid . ".$lang.md")->isFile()) {
             $f = new self($rootDir->withRelativePath($pid . ".$lang.md")->asFile());
             $data = $f->read();
-            $data["ftype"] = "html";
+            $data["ftype"] = "md";
         } else if ($rootDir->withRelativePath($pid . ".$lang.html")->isFile()) {
             $f = new self($rootDir->withRelativePath($pid . ".$lang.html")->asFile());
             $data = $f->read();
