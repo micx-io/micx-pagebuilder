@@ -44,13 +44,16 @@
 
 <script>
     ka_define("create-page", async (self, $tpl, $event) => {
+
         console.log($event);
         let response =  await api_call("list/pages", "GET", null, {
             limitPid: KaToolsV1.route.search.get("pid")
         });
-        console.log(response);
+        console.log(response, KaToolsV1.route);
+        let pidPart = KaToolsV1.route.search.get("pid").split("/")[1];
         let scope = {
-            languages: Object.keys(response.sections[0].pages[KaToolsV1.route.search.get("pid").split("/")[1]]),
+
+            languages: Object.keys(response.sections[0].pages[pidPart]),
             selected: null,
             $fn: {
                 click: async () => {
