@@ -77,6 +77,7 @@ class FrontMatterFile
         if (isset ($data["ftype"]) && $data["ftype"] === "html") {
             $file = $rootDir->withRelativePath($data["pid"] . ".{$data["lang"]}.html");
         }
+
         $file->asFile()->touch();
         $f = new self($file->asFile());
         $f->write($data);
