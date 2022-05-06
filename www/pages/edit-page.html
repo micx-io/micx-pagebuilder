@@ -183,7 +183,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         let isExisting = true;
 
         // New site
-        if (typeof page.error !== "undefined") {
+        if (page.found === false) {
             isExisting = false;
             self.dispatchEvent(new CustomEvent("page:pageNotFound", {
                 detail: {
