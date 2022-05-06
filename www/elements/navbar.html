@@ -9,23 +9,33 @@
         </div>
         <div class="ms-auto">
             <button class="btn btn-outline-light" id="pullBtn" title="Inhalte in Editor laden">
+                <span class="spinner-border fs-3 p-2" role="status" hidden></span>
                 <i class="bi bi-cloud-arrow-down fs-3 pe-2 ps-2"></i>
             </button>
             <button class="btn btn-outline-primary" id="pushBtn" title="Geänderte Inhalte veröffentlichen">
+                <span class="spinner-border fs-3 pe-2 ps-2" role="status" hidden></span>
                 <i class="bi bi-cloud-arrow-up fs-3  pe-2 ps-2"></i>
             </button>
         </div>
     </div>
 </nav>
 <script>
+
+
     let pullBtn = new ActiveButton("#pullBtn", async () => {
         pullBtn.deactivate();
         await api_call('repo?a=pull');
         pullBtn.acivate();
-    });
+    }, "fs-3  pe-2 ps-2");
     let pushBtn = new ActiveButton("#pushBtn", async () => {
         pushBtn.deactivate();
         await api_call('repo?a=push')
         pushBtn.acivate();
-    });
+    }, "fs-3");
+
+    const REPO_PULLED_KEY = "repo_pulled"
+    if (sessionStorage.getItem(REPO_PULLED_KEY) === null) {
+        sessionStorage.setItem(REPO_PULLED_KEY, "yes");
+        pullBtn.click();
+    }
 </script>
