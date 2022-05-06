@@ -8,6 +8,7 @@ use Laminas\Diactoros\ServerRequest;
 use Micx\PageBuilder\Helper\FrontMatterFile;
 use Micx\PageBuilder\Type\RepoConf;
 use Phore\Core\Exception\NotFoundException;
+use Phore\FileSystem\Exception\FileNotFoundException;
 
 class PageCtrl
 {
@@ -42,7 +43,7 @@ class PageCtrl
         if ($request->getMethod() === "GET") {
             try {
                 return FrontMatterFile::ReadPage($this->repoConf->getRepoDocPath(), $pageId, $lang);
-            } catch (NotFoundException $e) {
+            } catch (FileNotFoundException $e) {
                 return ["found" => false];
             }
         } elseif ($request->getMethod() === "POST") {
