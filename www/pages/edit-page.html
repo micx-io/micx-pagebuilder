@@ -51,6 +51,7 @@
         });
         console.log(response, KaToolsV1.route);
         let pidPart = KaToolsV1.route.search.get("pid").split("/")[1];
+        console.log("pid path", pidPart, response.sections[0].pages[pidPart]);
         let scope = {
 
             languages: Object.keys(response.sections[0].pages[pidPart]),
