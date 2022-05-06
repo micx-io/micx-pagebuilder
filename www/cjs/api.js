@@ -7,5 +7,7 @@ async function api_call(path, method="GET", body=null, search=null) {
         url += "?" + (new URLSearchParams(search));
     }
     let response = await fetch(url, {method: method, body: body !== null ? JSON.stringify(body) : null});
+    if ( ! response.ok)
+        alert("Request failed: " + response.statusText);
     return response.json();
 }

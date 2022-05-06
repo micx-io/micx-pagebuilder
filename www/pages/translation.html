@@ -24,7 +24,7 @@
     </div>
     <nav class="navbar fixed-bottom navbar-light bg-light">
         <div class="container text-end">
-            <button class="btn btn-primary ms-auto" kap:on:click="$fn.save()"><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
+            <button id="saveBtn" class="btn btn-primary ms-auto" disabled><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
         </div>
     </nav>
 
@@ -47,10 +47,18 @@
             languages: languages,
             translations: translations,
             $fn: {
-                save: () => {
-                    api_call("files/_data/translations.yml", "POST", translations);
-                }
+
+            },
+            $on: {
+                change: () => saveBtn.acivate()
             }
+        });
+
+        let saveBtn =  new ActiveButton("#saveBtn", async () => {
+            saveBtn.deactivate();
+            await api_call("files/_data/translations.yml", "POST", translations);
+            await KaToolsV1.debounce(500);
+            saveBtn.spinner(false);
         });
 
 

@@ -8,12 +8,24 @@
             <p class="fs-6 text-muted m-0">https://leuffen.de</p>
         </div>
         <div class="ms-auto">
-            <button class="btn btn-outline-light" onclick="api_call('repo?a=pull')" title="Inhalte in Editor laden">
+            <button class="btn btn-outline-light" id="pullBtn" title="Inhalte in Editor laden">
                 <i class="bi bi-cloud-arrow-down fs-3 pe-2 ps-2"></i>
             </button>
-            <button class="btn btn-outline-primary" onclick="api_call('repo?a=push')" title="Geänderte Inhalte veröffentlichen">
+            <button class="btn btn-outline-primary" id="pushBtn" title="Geänderte Inhalte veröffentlichen">
                 <i class="bi bi-cloud-arrow-up fs-3  pe-2 ps-2"></i>
             </button>
         </div>
     </div>
 </nav>
+<script>
+    let pullBtn = new ActiveButton("#pullBtn", async () => {
+        pullBtn.deactivate();
+        await api_call('repo?a=pull');
+        pullBtn.acivate();
+    });
+    let pushBtn = new ActiveButton("#pushBtn", async () => {
+        pushBtn.deactivate();
+        await api_call('repo?a=push')
+        pushBtn.acivate();
+    });
+</script>
