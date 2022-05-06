@@ -25,6 +25,7 @@
     let pullBtn = new ActiveButton("#pullBtn", async () => {
         pullBtn.deactivate();
         await api_call('repo?a=pull');
+        window.location.reload();
         pullBtn.acivate();
     }, "fs-3  pe-2 ps-2");
     let pushBtn = new ActiveButton("#pushBtn", async () => {
