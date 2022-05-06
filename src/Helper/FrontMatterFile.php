@@ -80,6 +80,7 @@ class FrontMatterFile
 
         $file->asFile()->touch();
         $f = new self($file->asFile());
+        unset($data["ftype"]);
         $f->write($data);
 
     }
