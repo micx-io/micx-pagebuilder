@@ -2,6 +2,8 @@ desc: Startseite
 ptags:
   - text: In Navigationsleiste anzeigen
     key: show_always
+  - text: In Navigationsleiste anzeigen
+    key: show_always
 is_sortable: true;
 
 layouts:

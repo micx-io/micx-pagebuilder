@@ -135,7 +135,7 @@
                 </div>
 
                 <div ka:if="curForm.type === 'multi'" class="form-check">
-                    <label ka:for="let opt of curForm.options" class="form-check-label mt-1">
+                    <label ka:for="let opt of curForm.options" class="form-check-label ms-1 mt-1 w-100">
                         <input kap:value="opt.key" kap:bindarray="page[curForm.key]"  type="checkbox" class="form-check-input" >
                         <span kap:textContent="opt.text"></span>
                     </label>
