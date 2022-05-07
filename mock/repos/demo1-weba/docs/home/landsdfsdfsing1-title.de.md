@@ -6,8 +6,10 @@ navi_desc: |-
   asfdasdfasfd
   wurst
 permalink: se
-pid: home/landing1
-published: false
+pid: home/landsdfsdfsing1-title
+ptags:
+- show_always
+published: true
 title: wurst
 ---
 # Dies ist ein Text

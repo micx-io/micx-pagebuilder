@@ -15,8 +15,8 @@
             <ol class="list-group d-block w-100 list-group-flush">
                 <li ka:for="let pid in curSection.pages" class="list-group-item d-flex align-items-start pe-0 ps-0">
                     <div class="row w-100">
-                        <div class="col-6">
-                            <a kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][Object.keys(curSection.pages[pid])[0]].pid, lang: Object.keys(curSection.pages[pid])[0]})">
+                        <div class="col-6" style="overflow: hidden; text-overflow: ellipsis">
+                            <a class="text-nowrap"  kap:attr:href="ka_href('page', {}, {pid: curSection.pages[pid][Object.keys(curSection.pages[pid])[0]].pid, lang: Object.keys(curSection.pages[pid])[0]})">
                                 <i class="bi bi-file-earmark-post me-2 "></i><span kap:textContent="pid"></span>
                             </a>
                         </div>

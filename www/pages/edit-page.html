@@ -83,12 +83,12 @@
 <template id="languageListTpl">
 
     <div ka:for="let curForm of forms" class="mt-2 row">
-
-            <div class="col-12 col-md-4 col-lg-4 fw-bold">
+            <hr ka:if="curForm.type === 'hr'" class="mt-3 mb-3">
+            <div class="col-12 col-md-4 col-lg-4 fw-bold" ka:if="curForm.type !== 'hr'">
                 <label class="col-form-label" kap:textContent="curForm.name"></label>
                 <i ka:if="curForm.title != null" class="bi bi-info-circle fs-6" data-bs-toggle="tooltip" kap:attr:title="curForm.title"></i>
             </div>
-            <div class="col-12 col-md-8 col-lg-8">
+            <div class="col-12 col-md-8 col-lg-8" ka:if="curForm.type !== 'hr'">
                 <input ka:if="curForm.type === 'text'"
                        kap:attr="curForm.attrs" class="form-control"
                        kap:bind="page[curForm.key]">
@@ -125,7 +125,7 @@
     <pre id="editor1" kap:textContent="page.content" class="w-100 border bg-light p-3" style=" font-size: 16px">
     </pre>
 
-    <nav class="navbar fixed-bottom navbar-light bg-light">
+    <nav class="navbar fixed-bottom navbar-light bg-light border-top shadow">
         <div class="container text-end">
             <button id="saveBtn" class="btn btn-primary ms-auto" disabled><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
         </div>
@@ -150,14 +150,15 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             {key: "lang", name: "Sprache", type: "text", attrs: {disabled: true}},
             {key: "layout", name: "Layout", type: "select", attrs: {}, options:layoutOptions},
             {key: "published", name: "", type: "switch", checklabel: "Diese Seite veröffentlichen"},
-            {key: "permalink", name: "Perma-Link", type: "text", attrs: {disabled: false},
-                desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen."
+            {key: "permalink", name: "Permanent-Link", type: "text", attrs: {disabled: false},
+                desc: "Bitte freilassen, wenn links automatisch angelegt werden sollen.",
+                title: "Festen Link in der Form '/sektion/seite' setzen. Bitte freilassen, um die Link-URL automatisch anzulegen"
             },
             {key: "title", name: "Seiten-Titel", type: "text", attrs: {disabled: false},
                 title: "Titel im Header des Browsers und in Suchergebnissen"},
             {key: "description", name: "Meta-Description", type: "text", attrs: {disabled: false, maxlength: 160},
                 title: "Kurzbeschreibung: So erscheint Ihre Website in den Suchergebnissen. (Max. 160 Zeichen)"},
-
+            {type: "hr"}
         ];
         if (section.is_sortable === true)
             defaultForms.push({key: "order", name: "Sortierung", type: "text", attrs: {disabled: false, type:"number"},
