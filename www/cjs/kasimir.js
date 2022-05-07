@@ -234,7 +234,7 @@ KaToolsV1.apply = (selector, scope, recursive=false) => {
 
                 if (typeof selector._kap_bind === "undefined") {
                     selector.addEventListener("change", (event) => {
-
+                        console.log("change", selector);
                         let arr = KaToolsV1.eval(attVal, scope, selector);
 
                         if (arr.indexOf(selector.value) === -1 && selector.checked)

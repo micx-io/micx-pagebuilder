@@ -111,7 +111,7 @@
 
                 <div ka:if="curForm.type === 'multi'" class="form-check">
                     <label ka:for="let opt of curForm.options" class="form-check-label mt-1">
-                        <input kap:bindarray="page[curForm.key]" kap:value="opt.key" type="checkbox" class="form-check-input" >
+                        <input kap:value="opt.key" kap:bindarray="page[curForm.key]"  type="checkbox" class="form-check-input" >
                         <span kap:textContent="opt.text"></span>
                     </label>
                 </div>
@@ -155,7 +155,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             },
             {key: "title", name: "Seiten-Titel", type: "text", attrs: {disabled: false},
                 title: "Titel im Header des Browsers und in Suchergebnissen"},
-            {key: "description", name: "Kurzbeschreibung", type: "text", attrs: {disabled: false, maxlength: 160},
+            {key: "description", name: "Meta-Description", type: "text", attrs: {disabled: false, maxlength: 160},
                 title: "Kurzbeschreibung: So erscheint Ihre Website in den Suchergebnissen. (Max. 160 Zeichen)"},
 
         ];
@@ -181,6 +181,8 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         if(typeof page.published === "undefined")
             page.published = true;
 
+        if ( ! Array.isArray(page.ptags))
+            page.ptags = [];
 
         self.dispatchEvent(new CustomEvent("page:dataLoaded", {
             detail: {
