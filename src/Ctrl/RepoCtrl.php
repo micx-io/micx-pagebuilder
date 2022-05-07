@@ -30,6 +30,7 @@ class RepoCtrl
             }
             if ($action === "push") {
                 $r->commit("autocommit on pull");
+                $r->pull();
                 $r->push();
             }
             return ["ok" => "success", "ref" => $r->getRev()];
