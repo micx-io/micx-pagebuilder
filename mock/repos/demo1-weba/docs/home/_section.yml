@@ -15,6 +15,11 @@ forms:
     title: Wenn der Page-Tag In Navigationsleiste anzeigen aktiv ist, diesen wert als Titel nehmen. (Max. 30 Zeichen)
     attrs:
       maxlength: 30
-
+  - key: navi_desc
+    type: textarea
+    name: Titel in der Navigation
+    title: Wenn der Page-Tag In Navigationsleiste anzeigen aktiv ist, diesen wert als Titel nehmen. (Max. 30 Zeichen)
+    attrs:
+      maxlength: 30
 defaults:
   layout: xy
