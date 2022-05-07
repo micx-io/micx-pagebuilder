@@ -1,31 +1,56 @@
 <script>
     var languages = null;
 </script>
-<div class="row">
+
+<div class="position-fixed" style="top:80px;left:0;right: 0;">
+    <div class="container bg-white">
+        <div class="row pt-2">
+            <div class="d-none d-xl-block col-0 col-xl-4"></div>
+            <div class="col-12 col-xl-8">
+                <div class="border-bottom bg-white">
+                    <ka-tpl wait="page:dataLoaded@page-edit">
+                        <div class="row">
+                            <div class="col-8 col-md-10" style="overflow: hidden;text-overflow: ellipsis">
+                            <span class="w-100 fs-3 text-nowrap" style="overflow: hidden;text-overflow: ellipsis">
+                                <i class="bi bi-file-earmark-post fs-2 me-3"></i>
+                                <span kap:textContent="$event.detail.pid"></span>
+                                <span kap:textContent="$event.detail.lang" class="badge bg-light border text-dark p-1"></span>
+                            </span>
+                            </div>
+                            <div class="col-4 col-md-2 position-relative">
+                                <div class="dropdown position-absolute mt-1 me-3 end-0">
+                                    <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Sprache: <span kap:textContent="$event.detail.lang"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="langSelect">
+                                        <li ka:for="let lang of $event.detail.languages"><a class="dropdown-item" kap:classlist:active="lang.lang === $event.detail.lang" kap:attr:href="`?pid=${$event.detail.pid}&lang=${lang.lang}`" kap:textContent="lang.name"></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </ka-tpl>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row" >
     <div class="d-none d-xl-block col-0 col-xl-4">
         <ka-include src="/elements/page-list.html"></ka-include>
     </div>
 
     <div class="col-12 col-xl-8">
-        <ka-tpl class="clearfix" wait="page:dataLoaded@page-edit">
-            <h4 class="float-start ">
-                <i class="bi bi-file-earmark-post fs-1 me-3"></i>
-                <span kap:textContent="$event.detail.pid"></span>
-                <span kap:textContent="$event.detail.lang" class="badge bg-light border text-dark p-1"></span>
-            </h4>
 
-            <div class="dropdown float-end">
-                <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
-                    Sprache: <span kap:textContent="$event.detail.lang"></span>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="langSelect">
-                    <li ka:for="let lang of $event.detail.languages"><a class="dropdown-item" kap:classlist:active="lang.lang === $event.detail.lang" kap:attr:href="`?pid=${$event.detail.pid}&lang=${lang.lang}`" kap:textContent="lang.name"></a></li>
-
-                </ul>
-            </div>
-        </ka-tpl>
-        <div class="clearfix mb-4 w-100"></div>
-
+        <div style="margin-top: 48px"></div>
         <create-page></create-page>
         <page-edit></page-edit>
     </div>
