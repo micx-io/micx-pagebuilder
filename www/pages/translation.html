@@ -56,6 +56,12 @@
 
         let saveBtn =  new ActiveButton("#saveBtn", async () => {
             saveBtn.deactivate();
+
+            for (let key in translations)
+                for (let lang in translations[key])
+                    if (translations[key][lang] === "")
+                        translations[key][lang] = null;
+
             await api_call("files/_data/translations.yml", "POST", translations);
             await KaToolsV1.debounce(500);
             saveBtn.spinner(false);
