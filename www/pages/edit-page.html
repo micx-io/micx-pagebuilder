@@ -271,7 +271,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
           editor.textContent = code
         }
         let jar = CodeJar(self.querySelector("#editor1"), highlight);
-        jar.onUpdate(code => scope.page.content = code)
+        jar.onUpdate(code => { scope.page.content = code, scope.$on.change()});
 
 
 
