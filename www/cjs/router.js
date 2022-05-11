@@ -90,6 +90,7 @@ customElements.define("ka-router", KasimirV1_Router);
 
 class KaToolsV1_Include extends HTMLElement {
 
+
     _importScriptRecursive(node, src) {
         let chels = node instanceof HTMLTemplateElement ? node.content.childNodes : node.childNodes;
 
@@ -111,21 +112,33 @@ class KaToolsV1_Include extends HTMLElement {
                         "\n<<<<<<<<\n",
                         n.innerHTML);
                 }
-                console.log (n);
                 s.replaceWith(n);
                 window.onerror = handler;
             } catch (e) {
                 console.error(`[ka-include]: Script error in '${src}': ${e}`, e);
-                //throw e;
+                throw e;
             }
         }
     }
 
-    async connectedCallback() {
+    static get observedAttributes() { return ["src"] }
+    async attributeChangedCallback(name, oldValue, newValue) {
+        if (name !== "src")
+            return;
+        if (newValue === "" || newValue === null)
+            return;
+        console.log("load by attr", newValue);
         let src = this.getAttribute("src");
         let result = await fetch(src);
         this.innerHTML = await result.text();
         this._importScriptRecursive(this, src);
+    }
+
+    async connectedCallback() {
+        let src = this.getAttribute("src");
+        if (src === "" || src === null)
+            return;
+
     }
 
 }

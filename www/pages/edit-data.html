@@ -1,0 +1,40 @@
+<script>
+
+
+    ka_define("ka-data-loader", async (self, $tpl) => {
+        let fileUri = "files/_data/" + KaToolsV1.route.search.get("file");
+
+        window.data = await api_call(fileUri);
+        let data = window.data;
+
+        scope = {editor: `/editors/${window.data._editor}.html`};
+        console.log("loading editor for file", scope);
+        $tpl.render(scope);
+
+
+
+        let saveBtn =  new ActiveButton("#saveBtn", async () => {
+            saveBtn.deactivate();
+
+
+            await api_call(fileUri, "POST", window.data);
+            await KaToolsV1.sleep(500);
+            saveBtn.spinner(false);
+        });
+        self.addEventListener("keyup", (e)=> {
+            saveBtn.acivate();
+        })
+        self.addEventListener("change", (e)=> {
+            saveBtn.acivate();
+        })
+    }, html`<ka-include kap:attr:src="editor"></ka-include>`);
+
+</script>
+
+<ka-data-loader></ka-data-loader>
+
+<nav class="navbar fixed-bottom navbar-light bg-light">
+    <div class="container text-end">
+        <button id="saveBtn" class="btn btn-primary ms-auto" disabled><i class="bi bi-cloud-arrow-up"></i> Speichern</button>
+    </div>
+</nav>

@@ -36,3 +36,10 @@ function ka_define(name, callback, template=null, waitEvent=null) {
 
     customElements.define(name, fn);
 }
+
+
+function html(htmlContent) {
+    let e = document.createElement("template");
+    e.innerHTML = htmlContent;
+    return e;
+}

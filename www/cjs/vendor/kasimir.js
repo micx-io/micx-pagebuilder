@@ -1,13 +1,20 @@
 /* KasimirJS EMBED - documentation: https://kasimirjs.infracamp.org - Author: Matthias Leuffen <m@tth.es>*/
 
 /* from core/init.js */
-class KaToolsV1 {}
 
-/**
- * The last element started by Autostarter
- * @type {HTMLElement|HTMLScriptElement}
- */
-let KaSelf = null;
+
+
+if (typeof KaToolsV1 === "undefined") {
+    window.KaToolsV1 = class {
+    }
+
+    /**
+     * The last element started by Autostarter
+     * @type {HTMLElement|HTMLScriptElement}
+     */
+    window.KaSelf = null;
+}
+
 
 /* from core/dom-ready.js */
 /**
@@ -81,6 +88,15 @@ KaToolsV1.debounce = async (min, max=null) => {
         }, min);
     });
 
+}
+
+/* from core/sleep.js */
+KaToolsV1.sleep = (sleepms) => {
+    return new Promise((resolve) => {
+        window.setTimeout(() => {
+            return resolve('done');
+        }, sleepms);
+    });
 }
 
 /* from core/eval.js */
@@ -202,6 +218,12 @@ KaToolsV1.apply = (selector, scope, recursive=false) => {
         let r = KaToolsV1.eval(attVal, scope, selector);
 
         switch (attType) {
+            case "ref":
+                if (typeof scope.$ref === "undefined")
+                    scope.$ref = {};
+                scope.$ref[r] = selector;
+                break;
+
             case "classlist":
                 if (attSelector  !== null) {
                     if (r === true) {
@@ -234,7 +256,7 @@ KaToolsV1.apply = (selector, scope, recursive=false) => {
 
                 if (typeof selector._kap_bind === "undefined") {
                     selector.addEventListener("change", (event) => {
-                        console.log("change", selector);
+
                         let arr = KaToolsV1.eval(attVal, scope, selector);
 
                         if (arr.indexOf(selector.value) === -1 && selector.checked)
@@ -387,7 +409,9 @@ KaToolsV1.templatify = (elem, returnMode=true) => {
         let returnTpl = document.createElement("template");
         returnTpl.setAttribute("_kaidx", (KaToolsV1._ka_el_idx++).toString())
         /* @var {HTMLTemplateElement} returnTpl */
-        returnTpl.innerHTML = elem.innerHTML;
+        returnTpl.innerHTML = elem.innerHTML
+            .replaceAll(/\[\[(.*?)\]\]/g, (matches, m1) => `<span kap:textContent="${m1}"></span>`);
+
         KaToolsV1.templatify(returnTpl.content, false);
         return returnTpl;
     }
@@ -493,6 +517,10 @@ class KaV1Renderer {
             this._maintain(curScope, this.template.__kachilds[eIndex]);
             eIndex++;
         }
+        for(let remIdx = eIndex; remIdx < this.template.__kachilds.length; ) {
+            console.log("remove last child");
+            this._removeLastChild();
+        }
 
     }
 
@@ -543,6 +571,8 @@ class KaV1Renderer {
         }
     }
 }
+
+/* from tpl/getArgs.js */
 
 /* from core/autostart.js */
 
