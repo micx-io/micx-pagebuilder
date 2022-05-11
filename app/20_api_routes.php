@@ -54,7 +54,7 @@ AppLoader::extend(function (BraceApp $app) {
         if (STANDALONE) {
             return $app->redirect("/e/demo1/weba");
         } else {
-            return ["status" => "ok", "project" => "leuffen.de pagebuilder", "rev" => "265"]
+            return ["status" => "ok", "project" => "leuffen.de pagebuilder", "rev" => "265"];
         }
     });
 
