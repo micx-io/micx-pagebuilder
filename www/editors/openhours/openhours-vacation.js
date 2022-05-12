@@ -38,13 +38,13 @@ ka_define("open-hours-vacation", (self, $tpl) => {
             <textarea class="form-control" placeholder="Hinweistext" kap:options="data._status_values" kap:bind="data.vacation[rowId].text"></textarea>
         </td>
         <td class="text-end">
-            <button class="btn btn-outline-primary" kap:on:click="$fn.del(rowId)">-</button>
+            <button class="btn btn-outline-secondary" kap:on:click="$fn.del(rowId)"><i class="bi bi-x-lg"></i></button>
         </td>
     </tr>
     <tfoot>
     <tr>
         <td colspan="4" class="text-end">
-            <button class="btn btn-outline-primary" kap:on:click="$fn.add()">+</button>
+            <button class="btn btn-outline-primary" kap:on:click="$fn.add()"><i class="bi bi-plus-lg"></i></button>
         </td>
     </tr>
     </tfoot>

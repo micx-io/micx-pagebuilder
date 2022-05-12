@@ -26,12 +26,12 @@ ka_define("open-hours-table", (self, $tpl) => {
     <tr ka:for='let rowId in data.table'>
         <td><input class="form-control" type="text" kap:bind="data.table[rowId].day"></td>
         <td><input class="form-control" type="text" kap:bind="data.table[rowId].time"></td>
-        <td class="text-end"><button class="btn btn-outline-primary" kap:on:click="$fn.del(rowId)">-</button></td>
+        <td class="text-end"><button class="btn btn-outline-secondary" kap:on:click="$fn.del(rowId)"><i class="bi bi-x-lg"></i></button></td>
     </tr>
     <tfoot>
     <tr>
         <td colspan="4" class="text-end">
-            <button class="btn btn-outline-primary" kap:on:click="$fn.add()">+</button>
+            <button class="btn btn-outline-primary" kap:on:click="$fn.add()"><i class="bi bi-plus-lg"></i></button>
         </td>
     </tr>
     </tfoot>

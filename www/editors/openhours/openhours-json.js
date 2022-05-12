@@ -45,13 +45,13 @@ ka_define("open-hours-json", (self, $tpl) => {
         <td>
             <select class="form-select" kap:options="data._status_values" kap:bind="data.json[rowId].status">
         </td>
-        <td class="text-end"><button class="btn btn-outline-primary" kap:on:click="$fn.del(rowId)">-</button></td>
+        <td class="text-end"><button class="btn btn-outline-secondary" kap:on:click="$fn.del(rowId)"><i class="bi bi-x-lg"></i></button></td>
     </tr>
 
     <tfoot>
     <tr>
         <td colspan="4" class="text-end">
-            <button class="btn btn-outline-primary" kap:on:click="$fn.add()">+</button>
+            <button class="btn btn-outline-primary" kap:on:click="$fn.add()" title="Zeile hinzufügen"><i class="bi bi-plus-lg"></i></button>
         </td>
     </tr>
     </tfoot>
