@@ -8,7 +8,7 @@ ka_define("open-hours-json", (self, $tpl) => {
                 {text: "Donnerstag", value: "4"},
                 {text: "Freitag", value: "5"},
                 {text: "Samstag", value: "6"},
-                {text: "Sonntag", value: "7"},
+                {text: "Sonntag", value: "0"},
             ],
             $fn: {
                 del: (rowId) => {

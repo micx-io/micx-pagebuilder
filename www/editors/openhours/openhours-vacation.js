@@ -34,7 +34,7 @@ ka_define("open-hours-vacation", (self, $tpl) => {
             </div>
         </td>
         <td>
-            <input type="text" aria-label="Kurzbeschreibung" placeholder="Kurzbeschreibung" class="form-control" kap:bind="data.vacation[rowId].short_text">
+            <input type="text" aria-label="Kurzbeschreibung" placeholder="Kurzbeschreibung" class="form-control" kap:bind="data.vacation[rowId].title">
             <textarea class="form-control" placeholder="Hinweistext" kap:options="data._status_values" kap:bind="data.vacation[rowId].text"></textarea>
         </td>
         <td class="text-end">
