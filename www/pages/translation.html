@@ -34,7 +34,7 @@
 <script>
 
 
-    ka_define("language-list", async(self, tpl) => {
+    ka_define("language-list", async($this, $tpl) => {
         let languages =  await api_call("files/_data/languages.yml");
         let translations =  await api_call("files/_data/translations.yml");
         for (let key in translations) {
@@ -43,7 +43,7 @@
         }
         console.log(translations);
 
-        tpl.render({
+        $tpl.render({
             languages: languages,
             translations: translations,
             $fn: {

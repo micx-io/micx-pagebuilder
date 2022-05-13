@@ -53,6 +53,7 @@ AppLoader::extend(function () {
             $repoConf->__subscriptionId = "demo1";
             $repoConf->repo_dir = STANDALONE_PATH;
             $repoConf->doc_dir = STANDALONE_DOC_PATH;
+            $repoConf->info_domain = "<standalone>";
             return $repoConf;
         }
         $scopeId = $routeParams->get("scope_id");

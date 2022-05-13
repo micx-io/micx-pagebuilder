@@ -30,7 +30,10 @@ function ka_define(name, callback, template=null, waitEvent=null) {
                 })
                 return;
             }
-            callback(this, renderer);
+            callback(... await KaToolsV1.provider.arguments(callback, {
+                "$this": this,
+                "$tpl": renderer
+            }));
         }
     }
 
@@ -43,3 +46,5 @@ function html(htmlContent) {
     e.innerHTML = htmlContent;
     return e;
 }
+
+/* @var $tpl {KaV1Renderer} */

@@ -1,4 +1,4 @@
-ka_define("open-hours-json", (self, $tpl) => {
+ka_define("open-hours-json", ($tpl) => {
         let scope = {
             data: window.data,
             days: [

@@ -32,6 +32,9 @@ class RepoCtrl
                 $r->commit("autocommit on pull");
                 $r->pull();
                 $r->push();
+                $changedFile = phore_file($repoConf->getRepoDir() . DEFAULT_IS_CHANGED_FILE);
+                if ($changedFile->exists())
+                    $changedFile->unlink();
             }
             return ["ok" => "success", "ref" => $r->getRev()];
         } else {

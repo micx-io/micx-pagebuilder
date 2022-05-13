@@ -8,25 +8,31 @@
             <div class="d-none d-xl-block col-0 col-xl-4"></div>
             <div class="col-12 col-xl-8">
                 <div class="border-bottom bg-white">
-                    <ka-tpl wait="page:dataLoaded@page-edit">
+                    <ka-tpl wait="page:dataLoaded@page-edit" scopeinit="(api_info)=>api_info">
                         <div class="row">
-                            <div class="col-8 col-md-10" style="overflow: hidden;text-overflow: ellipsis">
+                            <div class="col-7 col-md-9" style="overflow: hidden;text-overflow: ellipsis">
                             <span class="w-100 fs-3 text-nowrap" style="overflow: hidden;text-overflow: ellipsis">
                                 <i class="bi bi-file-earmark-post fs-2 me-3"></i>
                                 <span kap:textContent="$event.detail.pid"></span>
                                 <span kap:textContent="$event.detail.lang" class="badge bg-light border text-dark p-1"></span>
                             </span>
                             </div>
-                            <div class="col-4 col-md-2 position-relative">
-                                <div class="dropdown position-absolute mt-1 me-3 end-0">
-                                    <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Sprache: <span kap:textContent="$event.detail.lang"></span>
+                            <div class="col-5 col-md-3 position-relative">
+                                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                    <a kap:attr:href="preview_url + '/' + ($event.detail.permalink != '' ? $event.detail.permalink : $event.detail.pid + '.' + $event.detail.lang)" title="Vorschau öffnen" target="_blank" class="btn btn-outline-secondary">
+                                        <i class="bi bi-caret-right-square"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="langSelect">
-                                        <li ka:for="let lang of $event.detail.languages"><a class="dropdown-item" kap:classlist:active="lang.lang === $event.detail.lang" kap:attr:href="`?pid=${$event.detail.pid}&lang=${lang.lang}`" kap:textContent="lang.name"></a></li>
+                                    <div class="dropdown btn-group">
+                                        <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="langSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Sprache: <span kap:textContent="$event.detail.lang"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="langSelect">
+                                            <li ka:for="let lang of $event.detail.languages"><a class="dropdown-item" kap:classlist:active="lang.lang === $event.detail.lang" kap:attr:href="`?pid=${$event.detail.pid}&lang=${lang.lang}`" kap:textContent="lang.name"></a></li>
 
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -59,7 +65,7 @@
 
 
 <template id="createNewPage">
-    <div class="alert alert-primary">
+    <div class="alert alert-primary position-relative" style="z-index: 0">
         <div>Diese Seite existiert noch nicht. Bitte wählen Sie eine Seite, aus der die Daten kopiert werden sollen</div>
         <select kap:bind="$scope.selected" kap:options="languages"></select>
         <button kap:on:click="$fn.click()">Seite anlegen</button>
@@ -68,7 +74,7 @@
 </template>
 
 <script>
-    ka_define("create-page", async (self, $tpl, $event) => {
+    ka_define("create-page", async ($this, $tpl, $event) => {
 
         console.log($event);
         let response =  await api_call("list/pages", "GET", null, {
@@ -196,7 +202,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
     }
 
 
-    ka_define("page-edit", async(self, tpl) => {
+    ka_define("page-edit", async($this, $tpl) => {
         let pid = KaToolsV1.route.search.get("pid");
         let lang = KaToolsV1.route.search.get("lang");
         let sec = pid.split("/")[0];
@@ -210,10 +216,11 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         if ( ! Array.isArray(page.ptags))
             page.ptags = [];
 
-        self.dispatchEvent(new CustomEvent("page:dataLoaded", {
+        $this.dispatchEvent(new CustomEvent("page:dataLoaded", {
             detail: {
                 lang: lang,
                 pid: pid,
+                permalink: page.permalink,
                 languages: languages
             }
         }));
@@ -224,7 +231,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
         // New site
         if (page.found === false) {
             isExisting = false;
-            self.dispatchEvent(new CustomEvent("page:pageNotFound", {
+            $this.dispatchEvent(new CustomEvent("page:pageNotFound", {
                 detail: {
                     lang: lang,
                     pid: pid,
@@ -256,7 +263,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             }
         }
 
-        tpl.render(scope);
+        $tpl.render(scope);
         let saveBtn = new ActiveButton("#saveBtn", async () => {
             saveBtn.deactivate();
             await api_call(`pages/_data/${pid}?lang=${lang}`, "POST", page);
@@ -270,7 +277,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
           // Do something with code and set html.
           editor.textContent = code
         }
-        let jar = CodeJar(self.querySelector("#editor1"), highlight);
+        let jar = CodeJar($this.querySelector("#editor1"), highlight);
         jar.onUpdate(code => { scope.page.content = code, scope.$on.change()});
 
 

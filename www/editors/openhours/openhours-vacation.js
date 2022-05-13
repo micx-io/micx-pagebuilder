@@ -1,4 +1,4 @@
-ka_define("open-hours-vacation", (self, $tpl) => {
+ka_define("open-hours-vacation", ($tpl) => {
         let scope = {
             data: window.data,
 

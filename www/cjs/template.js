@@ -11,7 +11,20 @@ class KaTemplate extends HTMLElement {
         let tpl = KaToolsV1.templatify(div);
         this.innerHTML = "";
         this.appendChild(tpl);
+        let scope = {};
         let renderer = new KaV1Renderer(tpl);
+        if (this.hasAttribute("scopeinit")) {
+            let scopeinit = this.getAttribute("scopeinit")
+            try {
+                let cb = KaToolsV1.eval(scopeinit, {}, this);
+                scope = cb(...await KaToolsV1.provider.arguments(cb));
+                console.log(scope);
+            } catch (e) {
+                console.error(`[ka-tpl] scopeinit: '${scopeinit}' excpetion: ${e} in`, this);
+                throw e;
+            }
+
+        }
         if (this.hasAttribute("wait")) {
             let wd = this.getAttribute("wait").split("@");
             let eventName = wd[0];
@@ -21,11 +34,14 @@ class KaTemplate extends HTMLElement {
             }
             target.addEventListener(eventName, (event) => {
                 console.log("[ka-tpl] Rendering on event", event);
-                renderer.render({$event: event});
+                scope.$event = event;
+                renderer.render(scope);
             })
             return;
         }
-        renderer.render({});
+
+
+        renderer.render(scope);
 
     }
 }

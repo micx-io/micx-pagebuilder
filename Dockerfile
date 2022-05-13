@@ -1,4 +1,4 @@
-FROM ghcr.io/nfra-project/kickstart-flavor-php:unstable
+FROM ghcr.io/nfra-project/kickstart-flavor-php:8.1
 ENV DEV_CONTAINER_NAME="micx-pagebuilder"
 ENV CONF_REPO_PATH="/data"
 ENV CONF_SSH_KEY_FILE=""

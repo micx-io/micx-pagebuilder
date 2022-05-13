@@ -28,7 +28,7 @@ if (typeof KaToolsV1 === "undefined") {
  */
 KaToolsV1.domReady = async ()=> {
     return new Promise((resolve) => {
-        if (document.readyState === "complete" || document.readyState === "loaded")
+        if (document.readyState === "complete" || document.readyState === "loaded" || document.readyState === "interactive")
             return resolve("loaded");
         document.addEventListener("DOMContentLoaded", ()=>resolve('DOMContentLoaded'));
     });
@@ -103,6 +103,7 @@ KaToolsV1.sleep = (sleepms) => {
 
 
 KaToolsV1.eval = (stmt, __scope, e, __refs) => {
+
     if (stmt.endsWith(";"))
         stmt = stmt.slice(0, -1);
 
@@ -518,7 +519,6 @@ class KaV1Renderer {
             eIndex++;
         }
         for(let remIdx = eIndex; remIdx < this.template.__kachilds.length; ) {
-            console.log("remove last child");
             this._removeLastChild();
         }
 
@@ -572,7 +572,91 @@ class KaV1Renderer {
     }
 }
 
-/* from tpl/getArgs.js */
+/* from app/getArgs.js */
+/**
+ * Return array of arguments of the function
+ *
+ * <example>
+ *     function f1(arg1, arg2=null) {}
+ *
+ *     assert(KaToolsV1.getArgs(f1) === ["arg1", "arg2"])
+ * </example>
+ *
+ * @param func
+ * @returns {string[]}
+ */
+KaToolsV1.getArgs = (func) => {
+    return (func + '')
+        .replace(/[/][/].*$/mg,'') // strip single-line comments
+        .replace(/^(.*?)=>.*$/s, (m, m1) => m1)
+        .replace(/\s+/g, '') // strip white space
+        .replace(/[/][*][^/*]*[*][/]/g, '') // strip multi-line comments
+        .split('){', 1)[0].replace(/^[^(]*[(]/, '') // extract the parameters
+        .replace(/=[^,]+/g, '') // strip any ES6 defaults
+        .split(',').filter(Boolean).map(e => e.replace(")", "")).filter(e => e !== "");
+}
+
+/* from app/provider.js */
+
+KaToolsV1.provider = new class {
+    #services = {};
+
+
+    async get(name) {
+        return new Promise(async (resolve, reject) => {
+            let service = this.#services[name];
+            if (typeof service === "undefined")
+                return reject(`Cannot resolve '${name}'`)
+            if(service.resolved)
+                return resolve(service.value);
+            service.promises.push(resolve);
+            if (service.promises.length > 1)
+                return;
+            service.value = await service.cb(...await this.arguments(service.cb, service.params));
+            service.resolved = true;
+            service.promises.forEach(elem => elem(service.value));
+        });
+    }
+
+    /**
+     *
+     * @param cb
+     * @param params
+     * @returns {Promise<Array>}
+     */
+    async arguments(cb, params = {}) {
+        return new Promise(async (resolve, reject) => {
+            let args = KaToolsV1.getArgs(cb);
+            let retArgs = [];
+            for(let i = 0; i < args.length; i++) {
+                let argName = args[i];
+                if(params[argName]) {
+                    retArgs.push(params[argName]);
+                    continue;
+                }
+                try {
+                    retArgs.push(await this.get(argName))
+                } catch (e) {
+                    return reject(e);
+                }
+
+            }
+            resolve(retArgs);
+        });
+    }
+
+
+
+    async define(name, callback, params={}) {
+        this.#services[name] = {
+            cb: callback,
+            params: params,
+            value: null,
+            resolved: false,
+            promises: []
+        }
+    }
+}();
 
 /* from core/autostart.js */
 

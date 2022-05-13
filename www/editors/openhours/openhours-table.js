@@ -1,4 +1,4 @@
-ka_define("open-hours-table", (self, $tpl) => {
+ka_define("open-hours-table", ($tpl) => {
         let scope = {
             data: window.data,
             $fn: {

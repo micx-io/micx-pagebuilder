@@ -17,6 +17,7 @@ use Laminas\Diactoros\Response\TextResponse;
 use Laminas\Diactoros\ResponseFactory;
 use Micx\FormMailer\Config\Config;
 use Micx\PageBuilder\Ctrl\FileCtrl;
+use Micx\PageBuilder\Ctrl\InfoCtrl;
 use Micx\PageBuilder\Ctrl\JsCtrl;
 use Micx\PageBuilder\Ctrl\PageCtrl;
 use Micx\PageBuilder\Ctrl\PageListCtrl;
@@ -30,6 +31,7 @@ AppLoader::extend(function (BraceApp $app) {
 
     $app->router->on("GET@$mount/pagebuilder.js", JsCtrl::class);
 
+    $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/info", InfoCtrl::class, [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/files/::file", FileCtrl::class, [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST|GET@$mount/:subscription_id/:scope_id/pages/::page_id", PageCtrl::class, [RequireValidAuthTokenMiddleware::class]);
     $app->router->on("POST@$mount/:subscription_id/:scope_id/do/copy/page", [PageCtrl::class, "copyPage"], [RequireValidAuthTokenMiddleware::class]);

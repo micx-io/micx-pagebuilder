@@ -45,7 +45,22 @@
     <section style="height: 80px">
 
     </section>
+    <template ka-autostart>
+        <script>
+            (()=>{
+                let p = KaToolsV1.provider;
+
+                p.define("api_info", async () => {
+                    return await api_call("info");
+                });
+
+                /* @var api_info {} */
+
+            })();
+        </script>
+    </template>
     <script>
+
         window.setTimeout(()=>{
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

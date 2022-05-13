@@ -44,11 +44,11 @@
 <script>
 
 
-    ka_define("sections-list", async(self, tpl) => {
+    ka_define("sections-list", async($tpl) => {
         let response =  await api_call("list/pages");
 
         console.log(response);
-        tpl.render({
+        $tpl.render({
             sections: response.sections,
             errors: response.errors,
             $fn: {

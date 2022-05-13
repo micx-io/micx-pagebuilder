@@ -32,6 +32,11 @@ class RepoConf
      */
     public array $auth = [];
 
+    /**
+     * @var string|null
+     */
+    public ?string $info_domain = null;
+
 
     /**
      * The directory the git-repo is cloned into
@@ -46,6 +51,11 @@ class RepoConf
     public function getRepoDocPath($path = null) : PhoreUri
     {
         return $this->getRepoDir()->withRelativePath((string)$this->doc_dir)->withRelativePath((string)$path);
+    }
+
+    public function getPathId() : string
+    {
+        return "{$this->__subscriptionId}-{$this->__scopeId}";
     }
 
 

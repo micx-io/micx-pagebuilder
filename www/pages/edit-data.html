@@ -1,7 +1,7 @@
 <script>
 
 
-    ka_define("ka-data-loader", async (self, $tpl) => {
+    ka_define("ka-data-loader", async ($tpl) => {
         let fileUri = "files/_data/" + KaToolsV1.route.search.get("file");
 
         window.data = await api_call(fileUri);
