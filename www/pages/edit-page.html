@@ -258,6 +258,8 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             },
             $on: {
                 change: () => {
+                    if(page.permalink.trim() === "")
+                        page.permalink = null;
                     saveBtn.acivate();
                 }
             }
