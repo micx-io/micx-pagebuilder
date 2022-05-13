@@ -49,6 +49,8 @@ AppLoader::extend(function () {
     $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
         if (STANDALONE === true) {
             $repoConf = new RepoConf();
+            $repoConf->__scopeId = "weba";
+            $repoConf->__subscriptionId = "demo1";
             $repoConf->repo_dir = STANDALONE_PATH;
             $repoConf->doc_dir = STANDALONE_DOC_PATH;
             return $repoConf;
