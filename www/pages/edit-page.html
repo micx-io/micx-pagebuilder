@@ -270,6 +270,7 @@ import {CodeJar} from 'https://medv.io/codejar/codejar.js'
             saveBtn.deactivate();
             await api_call(`pages/_data/${pid}?lang=${lang}`, "POST", page);
             await KaToolsV1.debounce(500);
+            window.location.reload();
             saveBtn.spinner(false);
         });
         //await KaToolsV1.debounce(500, 500);

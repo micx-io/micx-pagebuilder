@@ -74,6 +74,7 @@
     let pushBtn = new ActiveButton("#pushBtn", async () => {
         pushBtn.deactivate();
         await api_call('repo?a=push')
+        window.location.reload();
         pushBtn.acivate();
     }, "fs-3");
 
