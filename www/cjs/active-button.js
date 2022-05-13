@@ -67,7 +67,7 @@ class ActiveButton {
                 this._spinner.replaceWith(this._origElement)
                 return;
             }
-            this._button.removeChild(this.#spinner);
+            this._button.removeChild(this._spinner);
             this._spinner = null;
         }
     }
