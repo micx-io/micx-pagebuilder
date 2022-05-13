@@ -103,7 +103,6 @@ KaToolsV1.sleep = (sleepms) => {
 
 
 KaToolsV1.eval = (stmt, __scope, e, __refs) => {
-
     if (stmt.endsWith(";"))
         stmt = stmt.slice(0, -1);
 
@@ -599,14 +598,18 @@ KaToolsV1.getArgs = (func) => {
 /* from app/provider.js */
 
 KaToolsV1.provider = new class {
-    #services = {};
+
+    constructor() {
+        this._services = {};
+    }
+
 
 
     async get(name) {
         return new Promise(async (resolve, reject) => {
-            let service = this.#services[name];
+            let service = this._services[name];
             if (typeof service === "undefined")
-                return reject(`Cannot resolve '${name}'`)
+                return reject(`Provider cannot resolve '${name}'`)
             if(service.resolved)
                 return resolve(service.value);
             service.promises.push(resolve);
@@ -636,19 +639,24 @@ KaToolsV1.provider = new class {
                 }
                 try {
                     retArgs.push(await this.get(argName))
-                } catch (e) {
+                } catch(e) {
                     return reject(e);
                 }
-
             }
             resolve(retArgs);
         });
     }
 
 
+    defineValue(name, value) {
+        this._services[name] = {
+            value: value,
+            resolved: true
+        }
+    }
 
-    async define(name, callback, params={}) {
-        this.#services[name] = {
+    define(name, callback, params={}) {
+        this._services[name] = {
             cb: callback,
             params: params,
             value: null,
