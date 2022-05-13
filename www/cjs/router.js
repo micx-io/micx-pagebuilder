@@ -127,7 +127,7 @@ class KaToolsV1_Include extends HTMLElement {
             return;
         if (newValue === "" || newValue === null)
             return;
-        console.log("load by attr", newValue);
+
         let src = this.getAttribute("src");
         let result = await fetch(src);
         this.innerHTML = await result.text();

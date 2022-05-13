@@ -53,7 +53,7 @@ class ActiveButton {
                 this._spinner = document.createElement("span");
                 this._spinner.setAttribute("class", "spinner-border spinner-border-sm");
             }
-            let origIcon = this.#button.querySelector("i");
+            let origIcon = this._button.querySelector("i");
             if (origIcon !== null) {
                 this._origElement = origIcon.cloneNode(true);
                 origIcon.replaceWith(this._spinner);

@@ -18,7 +18,6 @@ class KaTemplate extends HTMLElement {
             try {
                 let cb = KaToolsV1.eval(scopeinit, {}, this);
                 scope = cb(...await KaToolsV1.provider.arguments(cb));
-                console.log(scope);
             } catch (e) {
                 console.error(`[ka-tpl] scopeinit: '${scopeinit}' excpetion: ${e} in`, this);
                 throw e;
