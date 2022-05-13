@@ -1,0 +1,10 @@
+version: "3"
+services:
+  redis:
+    image: "redis:7"
+    networks:
+      - micx-pagebuilder
+
+networks:
+  micx-pagebuilder:
+    external: true

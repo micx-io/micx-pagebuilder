@@ -39,6 +39,12 @@ AppLoader::extend(function () {
         return $repo;
     }));
 
+    $app->define("redis", new DiService(function () {
+        $redis = new \Redis();
+        $redis->connect(CONF_REDIS_HOST, CONF_REDIS_PORT);
+        return $redis;
+    }));
+
 
     $app->define("repoConf", new DiService(function (T_Subscription $subscription, RouteParams $routeParams) {
         if (STANDALONE === true) {

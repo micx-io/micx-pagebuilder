@@ -11,6 +11,8 @@ define("CONF_SUBSCRIPTION_ENDPOINT", "/opt/mock/sub");
 define("CONF_SUBSCRIPTION_CLIENT_ID", "micx-pagebuilder");
 define("CONF_SUBSCRIPTION_CLIENT_SECRET", "");
 
+define("CONF_REDIS_HOST", "redis");
+define("CONF_REDIS_PORT", "6379");
 
 const CONF_API_MOUNT = "/v1/pagebuilder";
 

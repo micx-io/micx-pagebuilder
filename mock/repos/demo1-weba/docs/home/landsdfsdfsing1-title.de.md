@@ -10,7 +10,7 @@ pid: home/landsdfsdfsing1-title
 ptags:
 - show_always
 published: true
-title: wurst
+title: wursts
 ---
 # Dies ist ein Text
 

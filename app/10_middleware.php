@@ -22,6 +22,7 @@ use Brace\Session\Storages\CookieSessionStorage;
 use Lack\Subscription\Brace\SubscriptionMiddleware;
 use Lack\Subscription\Type\T_Subscription;
 use Micx\FormMailer\Config\Config;
+use Micx\PageBuilder\Mw\SendRedisMessageMw;
 use Micx\PageBuilder\Type\RepoConf;
 use Phore\Di\Container\Producer\DiService;
 
@@ -52,7 +53,7 @@ AppLoader::extend(function (BraceApp $app) {
 
             return $handler->handle($request);
         }),
-
+        new SendRedisMessageMw(),
         new RouterDispatchMiddleware([
             new JsonReturnFormatter($app)
         ]),
