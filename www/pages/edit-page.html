@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-5 col-md-3 position-relative">
                                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                    <a kap:attr:href="preview_url + '/' + ($event.detail.permalink != '' ? $event.detail.permalink : $event.detail.pid + '.' + $event.detail.lang)" title="Vorschau öffnen" target="_blank" class="btn btn-outline-secondary">
+                                    <a kap:attr:href="preview_url + '/' + ($event.detail.permalink !== null ? $event.detail.permalink : $event.detail.pid + '.' + $event.detail.lang)" title="Vorschau öffnen" target="_blank" class="btn btn-outline-secondary">
                                         <i class="bi bi-caret-right-square"></i>
                                     </a>
                                     <div class="dropdown btn-group">
