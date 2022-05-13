@@ -9,64 +9,66 @@ KaToolsV1.createElement = (tag, proto, parentElem=null) => {
 
 class ActiveButton {
 
-    /**
-     * @var {HTMLElement}
-     */
-    #button;
-    #spinner;
-    #origElement;
-    #optClasses;
+
 
     constructor(elem, onclick=null, optClasses="") {
+        /**
+         * @var {HTMLElement}
+         */
+        this._button;
+        this._spinner;
+        this._origElement;
+        this._optClasses;
+
         if ( ! (elem instanceof HTMLElement)) {
             elem = KaToolsV1.querySelector(elem);
         }
-        this.#optClasses = optClasses;
-        this.#button = elem;
+        this._optClasses = optClasses;
+        this._button = elem;
         if (onclick)
-            this.#button.addEventListener("click", onclick);
+            this._button.addEventListener("click", onclick);
     }
 
     deactivate(spinner=true) {
-        this.#button.setAttribute("disabled", "disabled");
+        this._button.setAttribute("disabled", "disabled");
         if (spinner)
             this.spinner();
     }
 
     acivate() {
-        this.#button.removeAttribute("disabled");
+        this._button.removeAttribute("disabled");
         this.spinner(false);
     }
 
     click() {
-        this.#button.dispatchEvent(new Event("click"));
+        this._button.dispatchEvent(new Event("click"));
     }
 
     spinner(active = true) {
         if(active) {
-            if (this.#button.querySelector("[role='status']")) {
-                this.#spinner = this.#button.querySelector("[role='status']").cloneNode(true);
-                this.#spinner.removeAttribute("hidden");
+            if (this._button.querySelector("[role='status']")) {
+                this._spinner = this._button.querySelector("[role='status']").cloneNode(true);
+                this._spinner.removeAttribute("hidden");
             } else {
-                this.#spinner = document.createElement("span");
-                this.#spinner.setAttribute("class", "spinner-border spinner-border-sm");
+                this._spinner = document.createElement("span");
+                this._spinner.setAttribute("class", "spinner-border spinner-border-sm");
             }
             let origIcon = this.#button.querySelector("i");
             if (origIcon !== null) {
-                this.#origElement = origIcon.cloneNode(true);
-                origIcon.replaceWith(this.#spinner);
+                this._origElement = origIcon.cloneNode(true);
+                origIcon.replaceWith(this._spinner);
             } else {
-                this.#button.appendChild(this.#spinner);
+                this._button.appendChild(this._spinner);
             }
             return;
         }
-        if (this.#spinner) {
-            if (this.#origElement !== null) {
-                this.#spinner.replaceWith(this.#origElement)
+        if (this._spinner) {
+            if (this._origElement !== null) {
+                this._spinner.replaceWith(this._origElement)
                 return;
             }
-            this.#button.removeChild(this.#spinner);
-            this.#spinner = null;
+            this._button.removeChild(this.#spinner);
+            this._spinner = null;
         }
     }
 
