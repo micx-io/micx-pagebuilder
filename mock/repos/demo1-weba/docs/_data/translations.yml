@@ -1,14 +1,12 @@
----
-Informationen zum Notdienst:
-  en: Information to somethingasdf
-  de: ~
-Bleiben Sie gesund:
-  _hint: Auf Startseite
-  en: Stay healthysdfsdfddddd
-  de: sdfasdfsdfg
+'Informationen zum Notdienst':
+  en: 'Information to somethingasdf'
+  de: null
+'Bleiben Sie gesund':
+  _hint: 'Auf Startseite'
+  en: 'Stay healthysdfsdfddddd'
+  de: sdfasdfsdfgh
 kadoom:
   de: afasdf
   en: asfdasdf
 Hello:
   de: yvcs
-...

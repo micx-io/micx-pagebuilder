@@ -8,7 +8,6 @@ KaToolsV1.route = {
 
 function ka_href(route_name, params = {}, search = null) {
     params = {...KaToolsV1.route.params, ...params};
-    console.log(params);
     let route = KaToolsV1.routes[route_name];
 
     route = route.replaceAll(/{([a-zA-Z0-9_]+)}/g, (match, name) => {

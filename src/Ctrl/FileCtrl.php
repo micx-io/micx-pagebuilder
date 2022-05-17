@@ -6,6 +6,7 @@ use Brace\Core\BraceApp;
 use Brace\Router\Type\RouteParams;
 use Lack\Subscription\Type\T_Subscription;
 use Micx\PageBuilder\Type\RepoConf;
+use Symfony\Component\Yaml\Yaml;
 
 class FileCtrl
 {
@@ -23,7 +24,8 @@ class FileCtrl
             $body = $this->app->get("body");
             $file = $repoConf->getRepoDocPath($routeParams->get("file"));
             if ($file->getExtension() === "yml") {
-                $file->asFile()->set_yaml(phore_json_decode($body));
+                out(var_export($body, true));
+                $file->asFile()->set_contents(Yaml::dump(phore_json_decode($body),4,  2));
                 return ["ok" => "success"];
             }
 

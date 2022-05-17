@@ -1,31 +1,34 @@
----
 _editor: openhours/v1
 table:
-- day: Mo - Mi
-  time: 08:00 - 13:00 Uhr
-- day: ~
-  time: 14:00 - 18:00 Uhr
+  -
+    day: 'Mo - Mi'
+    time: '08:00 - 13:00 Uhr'
+  -
+    day: null
+    time: '14:00 - 18:00 Uhr'
 _status_values:
-- Offen
-- Mit Voranmeldung
+  - Offen
+  - 'Mit Voranmeldung'
 json:
-- dayOfWeek: "3"
-  from: 04:44
-  till: "18:03"
-  status: Offen
-- dayOfWeek: ""
-  from: ""
-  till: ""
-  status: ~
+  -
+    dayOfWeek: '3'
+    from: '04:00'
+    till: '18:03'
+    status: 'Mit Voranmeldung'
+  -
+    dayOfWeek: ''
+    from: ''
+    till: ''
+    status: null
 vacation:
-- from: "2022-10-11"
-  till: "2022-11-02"
-- from: "2022-05-28"
-  till: "2022-05-27"
-  text: |-
-    Tollers
-    Text
-- from: ""
-  till: ""
-  text: ""
-...
+  -
+    from: '2022-10-11'
+    till: '2022-11-02'
+  -
+    from: '2022-05-28'
+    till: '2022-05-27'
+    text: "Tollers\nText"
+  -
+    from: ''
+    till: ''
+    text: ''

@@ -10,6 +10,11 @@ ka_define("open-hours-json", ($tpl) => {
                 {text: "Samstag", value: "6"},
                 {text: "Sonntag", value: "0"},
             ],
+            $on: {
+                change: () => {
+                    console.log("chang", scope.data);
+                }
+            },
             $fn: {
                 del: (rowId) => {
                     scope.data.json.splice(rowId, 1);

@@ -24,7 +24,8 @@
     "lack/subscription": "*",
     "phore/hydrator": "*",
     "phore/http-client": "*",
-    "phore/vcs": "*"
+    "phore/vcs": "*",
+    "symfony/yaml": "6.1.x-dev"
   },
   "require-dev": {
     "phore/tester": "*"
