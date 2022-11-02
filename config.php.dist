@@ -15,7 +15,7 @@ define("CONF_REDIS_HOST", "%CONF_REDIS_HOST?%");
 define("CONF_REDIS_PORT", "%CONF_REDIS_PORT?6379%");
 define("CONF_REDIS_CHANNEL", "%CONF_REDIS_CHANNEL?micx.pagebuilder.publish%");
 
-define("CONF_PREVIEW_HOST", "%CONF_PREVIEW_HOST?http://prev.micx.io%");
+define("CONF_PREVIEW_HOST", "%CONF_PREVIEW_HOST?prev.micx.io%");
 
 const CONF_API_MOUNT = "/v1/pagebuilder";
 

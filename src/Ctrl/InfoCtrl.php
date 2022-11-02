@@ -16,7 +16,7 @@ class InfoCtrl
     {
         return [
             "info_domain" => $repoConf->info_domain,
-            "preview_url" => CONF_PREVIEW_HOST . "/" . $repoConf->getPathId(),
+            "preview_url" => "http://" . $repoConf->getPathId() . "." . CONF_PREVIEW_HOST,
             "has_changes" => phore_file($repoConf->getRepoDir() . DEFAULT_IS_CHANGED_FILE)->exists()
         ];
     }
