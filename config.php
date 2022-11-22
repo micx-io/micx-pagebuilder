@@ -3,7 +3,7 @@
 define("DEV_MODE", (bool)"1");
 define("CONF_SSH_KEY_FILE", "/opt/ssh_keys");
 
-define("STANDALONE", (bool)"0");
+define("STANDALONE", (bool)"1");
 define("STANDALONE_PATH", "/opt/mock/repos/demo1-weba");
 define("STANDALONE_DOC_PATH", "/docs");
 
@@ -15,7 +15,7 @@ define("CONF_REDIS_HOST", "redis");
 define("CONF_REDIS_PORT", "6379");
 define("CONF_REDIS_CHANNEL", "micx.pagebuilder.publish");
 
-define("CONF_PREVIEW_HOST", "http://prev.micx.io");
+define("CONF_PREVIEW_HOST", "prev.micx.io");
 
 const CONF_API_MOUNT = "/v1/pagebuilder";
 
