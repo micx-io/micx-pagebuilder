@@ -16,6 +16,7 @@ command:
   run:
     - "sudo -E mkdir -p /data"
     - "sudo -E chmod -R 777 /data"
+
   dev:
   test:
 
