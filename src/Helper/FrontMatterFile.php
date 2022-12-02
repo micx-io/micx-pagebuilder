@@ -20,7 +20,7 @@ class FrontMatterFile
     {
         $content = $this->file->get_contents();
 
-        $parts = explode("\n---\n", $content, 3);
+        $parts = explode("\n---\n", $content, 2);
 
         $data = phore_yaml_decode($parts[0]);
 
