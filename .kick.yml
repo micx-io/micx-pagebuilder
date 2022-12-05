@@ -15,7 +15,6 @@ command:
 
   run:
     - "sudo -E mkdir -p /data"
-    - "sudo -E chown -R www-data /data"
     - "sudo -E chmod -R 777 /data"
 
   dev:
