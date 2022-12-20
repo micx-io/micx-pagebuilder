@@ -65,6 +65,8 @@ class FrontMatterFile
                 $errors[] = "Permalink conflict '{$data['permalink']}': $pid [$lang] == {$permalinks[$data["permalink"]]}";
             }
             $permalinks[$data["permalink"]] = "$pid [$lang]";
+        } else {
+            $data["permalink"] = null; // default
         }
         return $data;
     }
