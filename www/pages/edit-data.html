@@ -20,6 +20,7 @@
             await api_call(fileUri, "POST", window.data);
             await KaToolsV1.sleep(500);
             saveBtn.spinner(false);
+            saveBtn.acivate();
         });
         self.addEventListener("keyup", (e)=> {
             saveBtn.acivate();
@@ -27,6 +28,7 @@
         self.addEventListener("change", (e)=> {
             saveBtn.acivate();
         })
+        saveBtn.acivate();
     }, html`<ka-include kap:attr:src="editor"></ka-include>`);
 
 </script>

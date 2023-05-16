@@ -28,7 +28,3 @@ vacation:
     from: '2022-05-28'
     till: '2022-05-27'
     text: "Tollers\nText"
-  -
-    from: ''
-    till: ''
-    text: ''
