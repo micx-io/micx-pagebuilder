@@ -20,6 +20,7 @@
             await api_call(fileUri, "POST", window.data);
             await KaToolsV1.sleep(500);
             saveBtn.spinner(false);
+            window.location.reload();
             saveBtn.acivate();
         });
         self.addEventListener("keyup", (e)=> {
