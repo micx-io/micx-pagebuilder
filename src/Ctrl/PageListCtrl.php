@@ -27,6 +27,9 @@ class PageListCtrl
             if ( ! $path->isDirectory())
                 continue;
 
+            if (startsWith($path->getRelPath(), "~") || startsWith($path->getRelPath(), "."))
+                continue;
+
             $defFile = $path->withSubPath("_section.yml");
             if ( ! $defFile->exists())
                 continue;
