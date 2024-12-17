@@ -23,7 +23,7 @@ class RepoConf
     /**
      * @var string|null
      */
-    public string $repo_dir;
+    public ?string $repo_dir;
 
     public string $doc_dir;
 
