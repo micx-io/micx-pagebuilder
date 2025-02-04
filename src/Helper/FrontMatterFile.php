@@ -22,7 +22,12 @@ class FrontMatterFile
 
         $parts = explode("\n---\n", $content, 2);
 
-        $data = phore_yaml_decode($parts[0]);
+        try {
+
+            $data = phore_yaml_decode($parts[0]);
+        } catch (\Exception $e) {
+            throw new FileAccessException("Error parsing frontmatter: " . $e->getMessage() . " in file: " . $this->file->getUri());
+        }
 
         $data["content"] = $parts[1];
 
