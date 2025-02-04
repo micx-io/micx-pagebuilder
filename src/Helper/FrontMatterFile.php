@@ -38,7 +38,7 @@ class FrontMatterFile
     {
         $content = $data["content"];
         unset($data["content"]);
-        $data = str_replace("\n...", "\n---", phore_yaml_encode($data)) . "$content";
+        $data = "---\n" .  phore_yaml_encode($data) . "\n---\n" . "$content";
         $this->file->set_contents($data);
     }
 
