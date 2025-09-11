@@ -47,11 +47,11 @@ class PageCtrl
                 return ["found" => false];
             }
         } elseif ($request->getMethod() === "POST") {
-            $body = $this->app->get("body");
+            $body = phore_json_decode($this->app->get("body"));
             if (isset($body["order"])) {
                 $body["order"] = (int)$body["order"]; // Order must be int
             }
-            FrontMatterFile::WritePage($this->repoConf->getRepoDocPath(), phore_json_decode($body));
+            FrontMatterFile::WritePage($this->repoConf->getRepoDocPath(), $body);
             return ["ok" => true];
         }
     }
