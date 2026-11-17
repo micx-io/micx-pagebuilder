@@ -25,7 +25,7 @@
     "phore/hydrator": "*",
     "phore/http-client": "*",
     "phore/vcs": "*",
-    "symfony/yaml": "6.1.x-dev"
+    "symfony/yaml": "^6.4@stable"
   },
   "require-dev": {
     "phore/tester": "*"
